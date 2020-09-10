@@ -1,2 +1,2 @@
-# cs-160-team-piplup
-Repository for code used in our CS160 class.
+# CS 160 - Team Piplup
+Repository for code used in our POG app in CS160.
