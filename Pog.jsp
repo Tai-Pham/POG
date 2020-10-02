@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, java.awt.FlowLayout, java.awt.image.BufferedImage, java.io.File, java.io.IOException, javax.imageio.ImageIO, javax.swing.ImageIcon, javax.swing.JFrame, javax.swing.JLabel"%>
+<%@ page import="java.sql.*"%>
 <html>
 <style>
 h1 {text-align: center;}
@@ -12,6 +12,7 @@ p {text-align: center;}
 <body>
 <h1> <span style='color:#C5DBFF;font-family:"Comic Sans MS"; font-size:100px'>POG</h1>
 <% 
+	out.println("Using Java");
 	String db = "Pog";
     String user;
     user = "root";
@@ -39,6 +40,14 @@ p {text-align: center;}
 		out.println("SQLException caught: " + e.getMessage()); 
     }
 %>
-<body style="background-color:#64A0FF;">	
-</body>
+Using HTML <br>
+<body style="background-color:#64A0FF;">
+<p>
+<img src = "maxresdefault.jpg" alt = "minecraft"> <br>
+👍​👎 Minecraft Gameplay<br>
+Thomas <br>	
+<img src = "league.jpg" alt = "lol"> <br>
+👍​👎 League Gameplay<br>
+Thomas <br>	</p>
 </html>
+</body>
