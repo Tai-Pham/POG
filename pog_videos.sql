@@ -24,7 +24,9 @@ DROP TABLE IF EXISTS `videos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `videos` (
   `videoLocation` varchar(255) NOT NULL,
-  PRIMARY KEY (`videoLocation`)
+  `creator` varchar(45) NOT NULL,
+  `title` varchar(45) NOT NULL,
+  PRIMARY KEY (`videoLocation`,`creator`,`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -34,7 +36,7 @@ CREATE TABLE `videos` (
 
 LOCK TABLES `videos` WRITE;
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
-INSERT INTO `videos` VALUES ('C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ROOT\\Videos\\league.jpg'),('C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ROOT\\Videos\\maxresdefault.jpg');
+INSERT INTO `videos` VALUES ('C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ROOT\\Videos\\league.jpg','Thomas','League of Legends'),('C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ROOT\\Videos\\maxresdefault.jpg','Thomas','Minecraft');
 /*!40000 ALTER TABLE `videos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -47,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-02 11:58:02
+-- Dump completed on 2020-10-02 13:33:56
