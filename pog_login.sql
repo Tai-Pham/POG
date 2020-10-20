@@ -23,11 +23,13 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `login` (
-  `Username` varchar(255) NOT NULL,
-  `Password` varchar(255) DEFAULT NULL,
-  `Hash` varchar(255) DEFAULT NULL,
-  `Salt` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Username`)
+  `userID` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `hash` varchar(255) DEFAULT NULL,
+  `salt` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,3 +52,9 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-10-02 13:33:55
+
+CREATE TABLE `Account` (
+	`followers` int(255) NOT NULL,
+	`following` int(45) NOT NULL,
+	PRIMARY KEY (`userID`)
+)

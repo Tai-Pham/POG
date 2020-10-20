@@ -15,6 +15,15 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+CREATE TABLE `Home Page` (
+	`userID` int(255) NOT NULL,
+	`username` varchar(255) NOT NULL,
+	`title` varchar(255) NOT NULL,
+	`likes` INT(45) NOT NULL,
+	`videoLocation` varchar(255) NOT NULL,
+	PRIMARY KEY (`userID`)
+)
+
 --
 -- Table structure for table `videos`
 --
@@ -50,3 +59,22 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-10-02 13:33:56
+
+DROP TABLE IF EXISTS `comments`;
+
+CREATE TABLE `comments` (
+	`userID` int(255) NOT NULL,
+	`username` varchar(255) NOT NULL,
+	`comment` varchar(255) NOT NULL,
+	`videoLocation` varchar(255) NOT NULL,
+	PRIMARY KEY (`userID`)
+)
+
+DROP TABLE IF EXISTS `accountvideos`;
+
+CREATE TABLE `accountvideos` (
+	`videoLocation` varchar(255) NOT NULL,
+	`likes` INT(45) NOT NULL,
+	`userID` varchar(45) NOT NULL,
+	PRIMARY KEY (`userID`)
+)
