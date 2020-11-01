@@ -42,21 +42,30 @@ echo <<<_END
 		</html>		
 _END;
 
-session_start();
 require_once 'login.php';
-$conn = new mysqli($hn, $un, $pw, $db);
-if ($conn->connect_error) die (mysql_fatal_error());
+
+session_start();
+
+if(isset($_SESSION['username']))
+{
+	$conn = new mysqli($hn, $un, $pw, $db);
+	if ($conn->connect_error) die (mysql_fatal_error());
 
 
-//Create folder directories if they don't exist
-folderCheck();
+	//Create folder directories if they don't exist
+	folderCheck();
 
-if (isset($_POST['Upload']))
-{	
-	fileUploader($conn);
+	if (isset($_POST['Upload']))
+	{	
+		fileUploader($conn);
+	}
+
+	$conn->close();
+	}
+else{
+	header('location: PogLogin.php');
+		exit();
 }
-
-$conn->close();
 
 function fileUploader($conn)
 {
