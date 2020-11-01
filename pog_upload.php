@@ -1,18 +1,52 @@
 <?php
 echo <<<_END
-		<html><head><title>Video Upload</title></head>
-		<body>
-		<form method='post' action='vUpload.php' enctype='multipart/form-data'>
-		Select Video: <input type='file' name='file'>
-		<br>
-		<br>
-		<input type='submit' value='Upload' name='Upload'>
-		</form> </body> </html>		
+		<style>
+			.Page-Body{background-color:#64A0FF;}
+			.POG-Title{text-align: center;}
+			.Main-Page-Link{
+				text-decoration:none;
+				color:#C5DBFF;
+				font-family:Comic Sans MS;
+				font-size:100px;
+			}
+			.center{
+				margin:0;
+				position: absolute;
+					top: 50%;
+					left: 50%;
+					-ms-transform: translate(-50%, -50%);
+						transform: translate(-50%, -50%);
+			}
+		</style>
+		<html>
+		<head lang="en">
+				<meta charset="UTF-8">
+				<meta meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+				<link rel="icon" type="image/png" href="POG-Favicon.png">
+				<title>POG</title>
+			</head>
+		<body class = "Page-Body">
+		<h1 class="POG-Title"> 	
+					<a class="Main-Page-Link" href="home.php">POG</a>		
+				</h1>
+		<form method='post' action='pog_upload.php' enctype='multipart/form-data'>
+		<div class ="center">
+			Select Video: <input type='file' name='file'>
+			<br>
+			<br>
+			<input type='submit' value='Upload' name='Upload'>
+		</div>
+		</form> 
+		</body> 
+		</html>		
 _END;
 
-require_once 'login2.php';
+session_start();
+require_once 'login.php';
 $conn = new mysqli($hn, $un, $pw, $db);
 if ($conn->connect_error) die (mysql_fatal_error());
+
 
 //Create folder directories if they don't exist
 folderCheck();
@@ -49,9 +83,10 @@ function fileUploader($conn)
 				$uniquefilename = sanitizeString($time);
 				$file = $uniquefilename.basename($_FILES["file"]["name"], $ext).$ext;
 				$fname = $vdir.$file;
+				$un = $_SESSION['username'];
 				if(move_uploaded_file($_FILES["file"]["tmp_name"], $vdir.$file))
 				{
-					$query = "INSERT INTO vidtable(name,location) VALUES('".$file."','".$fname."')";
+					$query = "INSERT INTO videos(videoLocation, creator, title) VALUES('".$fname."', $un,'".$file."')";
 					mysqli_query($conn, $query);
 					echo "Successful upload";
 				}
