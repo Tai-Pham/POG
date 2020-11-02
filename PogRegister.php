@@ -22,6 +22,8 @@ Repeat Password
 Email
 <input type = 'text' name = 'email' style="height:50px; width:300px; font-size:25px;">
 
+<input type = 'submit' value = 'Back' name = 'backButton' style="height:70px; width:150px; font-size:25px;">
+
 <input type = 'submit' value = 'Register' name = 'registerButton' style="height:70px; width:150px; font-size:25px;">
 <pre></form></body></html>
 _END;
@@ -75,8 +77,13 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['repe
 		addUser($conn, $username, $password, $email);
 		$userID = getID($conn, $username);
 		addAccount($conn, $userID);
-		#header('location: authentication.php');
+		header('location: PogLogin.php');
 	}
+}
+
+if (isset($_POST['backButton']))
+{
+	header('location: PogLogin.php');
 }
 
 // Closing connection

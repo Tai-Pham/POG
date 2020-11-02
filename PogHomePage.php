@@ -1,5 +1,6 @@
 <?php
 
+
 	require_once 'login.php';
 
 	// Setting time-out for session
@@ -10,7 +11,8 @@
 	// Checks if a username is inputted
 	if (!isset($_SESSION['username']))
 	{
-		die ("Please <a href='PogLogin.php'> click here </a> to log in.");
+		header('location: PogLogin.php');
+		exit();
 	}
 
 	// Session Security
@@ -24,6 +26,99 @@
 		session_regenerate_id();
 		$_SESSION['initiated'] = 1;
 	}
+
+	$name = $_SESSION['username'];
+
+	echo<<<_END
+	<style>
+	url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+	body {
+		margin: 100;
+		background: #222;
+		font-family: 'Work Sans', sans-serif;
+		font-weight: 800;
+	}
+
+	.container {
+		max-width: 100%;
+		height: 60px;
+		margin: 0 auto;
+	}
+
+	header {
+		background: #3D6AA4;
+	}
+
+	header::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+
+	nav {
+		clear: both;
+		float: right;
+	}
+
+	nav ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	nav li {
+		display: inline-block;
+		margin-left: 70px;
+		padding-top: 23px;
+
+		position: relative;
+	}
+
+	nav a {
+		color: white;
+		text-decoration: none;
+		text-transform: uppercase;
+		font-size: 14px;
+	}
+
+	nav a:hover {
+		color: white;
+	}
+
+	nav a::before {
+		content: '';
+		display: block;
+		height: 5px;
+		background-color: white;
+
+		position: absolute;
+		top: 0;
+		width: 0%;
+
+		transition: all ease-in-out 250ms;
+	}
+
+	nav a:hover::before {
+		width: 100%;
+	}
+	</style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<html>
+	<header>
+		<div class="container">
+		<nav>
+			<ul>
+			<li><a href="#">$name</a></li>
+			<li><a href="?pog_upload">Upload</a></li>
+			<li><a href="?PogLogin">Log Out</a></li>
+			</ul>
+		</nav>
+		</div>
+	</header>
+	<head>
+		<title>Covid Testing Locations</title>
+	</head>
+_END;
 	
 	echo<<<_END
 		<style>
@@ -102,6 +197,19 @@ _END;
 	
 	
 echo "</html>";
+
+if (isset($_GET['PogLogin']))
+{
+	session_unset();
+
+	session_destroy();
+	header('location: PogLogin.php');
+}
+
+if (isset($_GET['pog_upload']))
+{
+	header('location: pog_upload.php');
+}
 
 
 
