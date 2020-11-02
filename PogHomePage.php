@@ -1,5 +1,7 @@
 <?php
 
+	require_once 'login.php';
+
 	// Setting time-out for session
 	ini_set('session.gc_maxlifetime', 60*60*24);
 
@@ -60,7 +62,7 @@
 			<body class='Page-Body'> 
 	
 				<h1 class='POG-Title'> 	
-					<a class='Main-Page-Link' href='home.php'>POG</a>		
+					<a class='Main-Page-Link' href='PogHomePage.php'>POG</a>		
 				</h1>
 _END;
 
