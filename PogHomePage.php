@@ -115,9 +115,6 @@
 		</nav>
 		</div>
 	</header>
-	<head>
-		<title>Covid Testing Locations</title>
-	</head>
 _END;
 	
 	echo<<<_END
