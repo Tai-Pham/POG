@@ -1,5 +1,13 @@
 <?php
-
+	
+	define("LIKE_SET", 1);
+	define("DISLIKE_SET", 2);
+	define("NOLIKE_SET", 0);
+	define("LIKE_SEARCH", 0);
+	define("LIKE_ON", "👍 ✅");
+	define("DISLIKE_ON", "👎 ✅");
+	define("LIKE_OFF", "👍");
+	define("DISLIKE_OFF", "👎");
 
 	require_once 'login.php';
 
@@ -128,16 +136,23 @@ _END;
 				font-size:100px;
 			}
 			.video-player{
-			margin-top: 30px; 
-			text-align: center;
+				margin-top: 30px; 
+				text-align: center;
 			}
 			.title-creator{
 				text-align: center;
 				margin-right: 550px;
 				font-family:Comic Sans MS;		
 			}
+			.likes{
+				text-align: left;
+				margin: 5px;
+				margin-left: 135px;
+				padding: 0;
+				font-family:Comic Sans MS;
+			}
 			.title{ font-size:30px; margin:0; padding: 0; }
-			.creator{ font-size:20px; margin:0 }
+			.creator{ font-size:20px; margin:0; margin-left: 30px }
 	
 		</style>
 		<html>
@@ -167,14 +182,35 @@ _END;
 	$rows = $result->num_rows;
 	
 	for($i = 0; $i < $rows; $i++){
-		
 		$output = $result->data_seek($i);
 		$row = $result->fetch_array(MYSQLI_ASSOC);
 		
 		$id = $row['videoID'];
-		$path = $row['videoLocation'];
+		$path = "\"" . $row['videoLocation'] . "\"";
 		$creator = $row['creator'];
 		$title = $row['title'];
+		$likes = $row['likes'] - $row['dislikes'];
+		$uID = $_SESSION['accountid'];
+		
+		$likeDisplay;
+		$dislikeDisplay;
+		
+		/* 
+			Query like table to check for like/dislikes status
+			0 = unset
+			1 = liked
+			2 = disliked		
+		*/
+		$likeQuery = "SELECT * FROM likes WHERE videoLocation=$path AND userID=$uID";
+		$likeResult = $conn->query($likeQuery);
+		if(!$likeResult) die("Like error: " . error());
+		
+		$likeOutput = $likeResult->data_seek(0);
+		$likeRow = $likeResult->fetch_array(MYSQLI_ASSOC);
+		$likeStatus = $likeRow['likeFlag'];
+		
+		$likeStatus == LIKE_SET ? $likeDisplay = LIKE_ON : $likeDisplay = LIKE_OFF;
+		$likeStatus == DISLIKE_SET ? $dislikeDisplay = DISLIKE_ON : $dislikeDisplay = DISLIKE_OFF;
 			
 		echo "
 				<div class='video-player'>
@@ -187,8 +223,19 @@ _END;
 					<input style='border:none;background:none' type='submit' name='select' value='$title' />
 					</form>
 					
-					<p class='creator'>$creator</p>
+					<p class='creator'>Uploaded by: $creator</p>
 				</div>	
+				
+				<div class='likes'>
+					<form class='likes'>$likes Likes</form>
+					<form class='likes' method='get' enctype='multipart/form-data'>
+					<input type='hidden' name='like'>
+					<input style='border:none;background:none' type='submit' name='likeSelect' value='$likeDisplay'; />
+					<form class='likes' method='get' enctype='multipart/form-data'>
+					<input type='hidden' name='dislike'>
+					<input style='border:none;background:none' type='submit' name='dislikeSelect' value='$dislikeDisplay'; />
+					</form>
+				</div>
 			</body>";
 	}
 	
