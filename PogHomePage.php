@@ -44,12 +44,10 @@
 				margin-right: 550px;
 				font-family:Comic Sans MS;		
 			}
-			.title{ font-size:30px; margin:0 }
+			.title{ font-size:30px; margin:0; padding: 0; }
 			.creator{ font-size:20px; margin:0 }
 	
 		</style>
-
-
 		<html>
 			<head lang="en">
 				<meta charset="UTF-8">
@@ -81,6 +79,7 @@ _END;
 		$output = $result->data_seek($i);
 		$row = $result->fetch_array(MYSQLI_ASSOC);
 		
+		$id = $row['videoID'];
 		$path = $row['videoLocation'];
 		$creator = $row['creator'];
 		$title = $row['title'];
@@ -91,10 +90,13 @@ _END;
 				</div>
 		
 				<div class='title-creator'>
-					<p class='title'>$title</p>
+					<form class='title' method='get' action='video_page.php' enctype='multipart/form-data'>
+					<input type='hidden' value=$id name='input'>
+					<input style='border:none;background:none' type='submit' name='select' value='$title' />
+					</form>
+					
 					<p class='creator'>$creator</p>
 				</div>	
-
 			</body>";
 	}
 	
