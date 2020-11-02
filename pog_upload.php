@@ -34,6 +34,7 @@ echo <<<_END
 		<div class ="center">
 			Select Video: <input type='file' name='file'>
 			<br>
+			Title <input type = 'text' name = 'title' style="height:25px; width:300px; font-size:10px;">
 			<br>
 			<input type='submit' value='Upload' name='Upload'>
 		</div>
@@ -56,10 +57,19 @@ if(isset($_SESSION['username']))
 	
 	//Create folder directories if they don't exist
 	folderCheck();
-
-	if (isset($_POST['Upload']))
+	
+	if (isset($_POST['Upload']) && isset($_POST['title']))
 	{	
-		fileUploader($conn);
+		$title = $_POST['title'];
+		$title = sanitizeString($title);
+		if (isEmpty($title))
+		{
+			echo "Please enter a title.";
+		}
+		else
+		{
+			fileUploader($conn);
+		}
 	}
 
 	$conn->close();
@@ -98,17 +108,16 @@ function fileUploader($conn)
 			
 			if ($ext)
 			{
-				$time = date("Y-m-dh:i:sa");
-				$uniquefilename = sanitizeString($time);
-				$file = $uniquefilename.basename($_FILES["file"]["name"], $ext).$ext;
-				$fname = $vdir.$file;
+				$file = basename($_FILES["file"]["name"], $ext).$ext;
+				$vidTitle = $_POST['title'];
+				$vidLocation = $vdir.$file;
 				$un = $_SESSION['username'];
 				$unID = $_SESSION['accountid']; // <-------- use session to hold the account Id
 				$likes = 0; // <--------- likes will always start at zero
 							
 				if(move_uploaded_file($_FILES["file"]["tmp_name"], $vdir.$file))
 				{
-					$query = "INSERT INTO videos(userID, videoLocation, creator, title, likes) VALUES('$unID', '$fname', '$un', '$file', '$likes')";
+					$query = "INSERT INTO videos(userID, videoLocation, creator, title, likes) VALUES('$unID', '$vidLocation', '$un', '$vidTitle', '$likes')";
 					mysqli_query($conn, $query);
 					echo "Successful upload";
 				}
@@ -125,18 +134,24 @@ function folderCheck()
 {
 	if (!file_exists(getcwd() . "/vidUploads/"))
 	{
-		print_r("no exist<br>");
 		mkdir('vidUploads/');
-	} else {
-		print_r("do exist<br>");;
 	}
+}
+
+function isEmpty($string)
+{
+	$string = trim($string);
+	
+	if ($string != "")
+	{
+		return false;
+	}
+	
+	return true;
 }
 
 function sanitizeString($var)
 {
-	$var = str_replace('"', "", $var);
-	$var = str_replace(':', "", $var);
-	$var = str_replace('-', "", $var);
 	$var = stripslashes($var);
 	$var = strip_tags($var);
 	$var = htmlentities($var);
