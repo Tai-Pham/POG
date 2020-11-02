@@ -22,7 +22,6 @@ Password
 <input type = 'submit' value = 'Login' name = 'loginButton' style="height:70px; width:150px; font-size:25px;">
 
 <input type = 'submit' value = 'Register' name = 'registerButton' style="height:70px; width:150px; font-size:25px;">
-
 <pre></form></body></html>
 _END;
 
@@ -55,6 +54,7 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['logi
 		{
 			session_start();
 			$_SESSION['username'] = $username;
+			$_SESSION['accountid'] = getID($conn, $username);
 			$_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] .$_SERVER['HTTP_USER_AGENT']);
 			header('location: PogHomePage.php');
 		}
@@ -123,6 +123,31 @@ function checkUser($connParam, $usernameParam, $passwordParam)
 	$search->close();
 	
 	return $exists;
+}
+
+// Grabs the login's USERID
+function getID($connParam, $usernameParam)
+{
+	$userID = 0;
+	$search = $connParam->prepare('SELECT userID FROM login WHERE username = ?');
+	$search->bind_param('s', $usernameParam);
+
+	if (!($search->execute()))
+	{
+		$search->close();
+		die (error());
+	}
+	else
+	{
+		$search->bind_result($userIDResult);
+		
+		while ($row = $search->fetch())
+		{
+			$userID = $userIDResult;
+		}
+	}
+
+	return $userID;
 }
 
 // Checks if field is empty

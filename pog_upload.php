@@ -63,7 +63,7 @@ if(isset($_SESSION['username']))
 	}
 
 	$conn->close();
-	}
+}
 else{
 	header('location: PogLogin.php');
 		exit();
@@ -71,15 +71,22 @@ else{
 
 function fileUploader($conn)
 {
+	$max_upload_size = 209715200;
 	if ($_FILES)
 	{
+		$size = $_FILES['file']['size'];
 		if (!($_FILES['file']['name'])) 
 		{
 			echo "No video has been selected. <br>";
 		}
+		if ($size > $max_upload_size)
+		{
+			echo "Files must be 200MB or less.";
+			exit();
+		}
 		else
 		{	
-			$vdir = "./vidUploads/";
+			$vdir = "vidUploads/";
 			$file = $_FILES['file']['name'];
 			switch($_FILES['file']['type'])
 			{
@@ -96,9 +103,12 @@ function fileUploader($conn)
 				$file = $uniquefilename.basename($_FILES["file"]["name"], $ext).$ext;
 				$fname = $vdir.$file;
 				$un = $_SESSION['username'];
+				$unID = $_SESSION['accountid']; // <-------- use session to hold the account Id
+				$likes = 0; // <--------- likes will always start at zero
+							
 				if(move_uploaded_file($_FILES["file"]["tmp_name"], $vdir.$file))
 				{
-					$query = "INSERT INTO videos(videoLocation, creator, title) VALUES('".$fname."', $un,'".$file."')";
+					$query = "INSERT INTO videos(userID, videoLocation, creator, title, likes) VALUES('$unID', '$fname', '$un', '$file', '$likes')";
 					mysqli_query($conn, $query);
 					echo "Successful upload";
 				}
@@ -116,7 +126,7 @@ function folderCheck()
 	if (!file_exists(getcwd() . "/vidUploads/"))
 	{
 		print_r("no exist<br>");
-		mkdir('./vidUploads/');
+		mkdir('vidUploads/');
 	} else {
 		print_r("do exist<br>");;
 	}
