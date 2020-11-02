@@ -28,7 +28,7 @@ echo <<<_END
 			</head>
 		<body class = "Page-Body">
 		<h1 class="POG-Title"> 	
-					<a class="Main-Page-Link" href="home.php">POG</a>		
+					<a class="Main-Page-Link" href="PogHomePage.php">POG</a>		
 				</h1>
 		<form method='post' action='pog_upload.php' enctype='multipart/form-data'>
 		<div class ="center">
@@ -50,8 +50,10 @@ if(isset($_SESSION['username']))
 {
 	$conn = new mysqli($hn, $un, $pw, $db);
 	if ($conn->connect_error) die (mysql_fatal_error());
-
-
+	
+	// Change current working directory
+	chdir(getcwd());
+	
 	//Create folder directories if they don't exist
 	folderCheck();
 
@@ -77,12 +79,13 @@ function fileUploader($conn)
 		}
 		else
 		{	
-			$vdir = "vidUploads/";
-			$txtdir = "txtUploads/";
+			$vdir = "./vidUploads/";
 			$file = $_FILES['file']['name'];
 			switch($_FILES['file']['type'])
 			{
 				case 'video/mp4'		: $ext = 'mp4';	break;
+				case 'video/mkv'		: $ext = 'mkv'; break;
+				case 'video/webm'		: $ext = 'webm'; break;
 				default					: $ext = ''; 	break;
 			}
 			
@@ -102,7 +105,7 @@ function fileUploader($conn)
 			}
 			else
 			{
-				echo "The selected video is not .mp4 type. <br>";
+				echo "The selected video is not a valid video file. <br>";
 			}
 		}
 	}
@@ -110,9 +113,12 @@ function fileUploader($conn)
 
 function folderCheck()
 {
-	if (!file_exists("vidUploads/"))
+	if (!file_exists(getcwd() . "/vidUploads/"))
 	{
-		mkdir("vidUploads/");
+		print_r("no exist<br>");
+		mkdir('./vidUploads/');
+	} else {
+		print_r("do exist<br>");;
 	}
 }
 
