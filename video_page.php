@@ -2,10 +2,7 @@
 	require_once 'login.php';
 	
 	if(isset($_GET['select']) && isset($_GET['input']))
-	{
-		
-		echo($_GET['input']);
-		
+	{		
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) die (error());
 		

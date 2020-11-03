@@ -1,6 +1,5 @@
 <?php
 
-
 	require_once 'login.php';
 
 	// Setting time-out for session
@@ -41,6 +40,7 @@
 
 	.container {
 		max-width: 100%;
+		float: right;
 		height: 60px;
 		margin: 0 auto;
 	}
@@ -109,7 +109,7 @@
 		<nav>
 			<ul>
 			<li><a href="#">$name</a></li>
-			<li><a href="?pog_upload">Upload</a></li>
+			<li><a href="?Upload">Upload</a></li>
 			<li><a href="?PogLogin">Log Out</a></li>
 			</ul>
 		</nav>
@@ -136,7 +136,12 @@ _END;
 				margin-right: 550px;
 				font-family:Comic Sans MS;		
 			}
-			.title{ font-size:30px; margin:0; padding: 0; }
+			.title{ font-size:30px; 
+				margin:0; 
+				padding: 0; 
+				text-decoration:none;
+				color:#000000;
+				font-family:Comic Sans MS;}
 			.creator{ font-size:20px; margin:0 }
 	
 		</style>
@@ -166,7 +171,7 @@ _END;
 	
 	$rows = $result->num_rows;
 	
-	for($i = 0; $i < $rows; $i++){
+	for($i = $rows - 1; $i >= 0; $i--){
 		
 		$output = $result->data_seek($i);
 		$row = $result->fetch_array(MYSQLI_ASSOC);
@@ -182,10 +187,7 @@ _END;
 				</div>
 		
 				<div class='title-creator'>
-					<form class='title' method='get' action='video_page.php' enctype='multipart/form-data'>
-					<input type='hidden' value=$id name='input'>
-					<input style='border:none;background:none' type='submit' name='select' value='$title' />
-					</form>
+					<a class='title' href='video_page.php?input=$id&select=$title'>$title</a>
 					
 					<p class='creator'>$creator</p>
 				</div>	
@@ -195,6 +197,12 @@ _END;
 	
 echo "</html>";
 
+
+if (isset($_GET['Upload']))
+{
+	header('location: pog_upload.php');
+}
+
 if (isset($_GET['PogLogin']))
 {
 	session_unset();
@@ -202,12 +210,6 @@ if (isset($_GET['PogLogin']))
 	session_destroy();
 	header('location: PogLogin.php');
 }
-
-if (isset($_GET['pog_upload']))
-{
-	header('location: pog_upload.php');
-}
-
 
 
 

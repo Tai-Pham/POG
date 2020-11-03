@@ -1,4 +1,9 @@
 <?php
+require_once 'login.php';
+
+session_start();
+
+
 echo <<<_END
 		<style>
 			.Page-Body{background-color:#64A0FF;}
@@ -34,7 +39,7 @@ echo <<<_END
 		<div class ="center">
 			Select Video: <input type='file' name='file'>
 			<br>
-			Title <input type = 'text' name = 'title' style="height:25px; width:300px; font-size:10px;">
+			Title <input type = 'text' name = 'title' style="height:25px; width:300px; font-size:15px;">
 			<br>
 			<input type='submit' value='Upload' name='Upload'>
 		</div>
@@ -43,9 +48,95 @@ echo <<<_END
 		</html>		
 _END;
 
-require_once 'login.php';
+$name = $_SESSION['username'];
+echo<<<_END
+	<style>
+	url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+	body {
+		margin: 100;
+		background: #222;
+		font-family: 'Work Sans', sans-serif;
+		font-weight: 800;
+	}
 
-session_start();
+	.container {
+		max-width: 100%;
+		float: right;
+		height: 60px;
+		margin: 0 auto;
+	}
+
+	header {
+		background: #3D6AA4;
+	}
+
+	header::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+
+	nav {
+		clear: both;
+		float: right;
+	}
+
+	nav ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	nav li {
+		display: inline-block;
+		margin-left: 70px;
+		padding-top: 23px;
+
+		position: relative;
+	}
+
+	nav a {
+		color: white;
+		text-decoration: none;
+		text-transform: uppercase;
+		font-size: 14px;
+	}
+
+	nav a:hover {
+		color: white;
+	}
+
+	nav a::before {
+		content: '';
+		display: block;
+		height: 5px;
+		background-color: white;
+
+		position: absolute;
+		top: 0;
+		width: 0%;
+
+		transition: all ease-in-out 250ms;
+	}
+
+	nav a:hover::before {
+		width: 100%;
+	}
+	</style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<html>
+	<header>
+		<div class="container">
+		<nav>
+			<ul>
+			<li><a href="#">$name</a></li>
+			<li><a href="?Back">Home</a></li>
+			<li><a href="?PogLogin">Log Out</a></li>
+			</ul>
+		</nav>
+		</div>
+	</header>
+_END;
 
 if(isset($_SESSION['username']))
 {
@@ -87,6 +178,7 @@ function fileUploader($conn)
 		$size = $_FILES['file']['size'];
 		if (!($_FILES['file']['name'])) 
 		{
+			
 			echo "No video has been selected. <br>";
 		}
 		if ($size > $max_upload_size)
@@ -128,6 +220,20 @@ function fileUploader($conn)
 			}
 		}
 	}
+}
+
+
+if (isset($_GET['PogLogin']))
+{
+	session_unset();
+
+	session_destroy();
+	header('location: PogLogin.php');
+}
+
+if (isset($_GET['Back']))
+{
+	header('location: PogHomePage.php');
 }
 
 function folderCheck()
