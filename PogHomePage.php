@@ -46,7 +46,8 @@
 	}
 
 	header {
-		background: #3D6AA4;
+		<!-- change here -->
+		background: #202933;
 	}
 
 	header::after {
@@ -119,7 +120,8 @@ _END;
 	
 	echo<<<_END
 		<style>
-			.Page-Body{background-color:#64A0FF;}
+			<!-- change here -->
+			.Page-Body{background-color:#34495e;}
 			.POG-Title{text-align: center;}
 			.Main-Page-Link{
 				text-decoration:none;

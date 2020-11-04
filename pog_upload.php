@@ -6,7 +6,7 @@ session_start();
 
 echo <<<_END
 		<style>
-			.Page-Body{background-color:#64A0FF;}
+			.Page-Body{background-color:#34495e;}
 			.POG-Title{text-align: center;}
 			.Main-Page-Link{
 				text-decoration:none;
@@ -17,6 +17,7 @@ echo <<<_END
 			.center{
 				margin:0;
 				position: absolute;
+				color:white;
 					top: 50%;
 					left: 50%;
 					-ms-transform: translate(-50%, -50%);
@@ -38,9 +39,9 @@ echo <<<_END
 		<form method='post' action='pog_upload.php' enctype='multipart/form-data'>
 		<div class ="center">
 			Select Video: <input type='file' name='file'>
-			<br>
+			<br><br>
 			Title <input type = 'text' name = 'title' style="height:25px; width:300px; font-size:15px;">
-			<br>
+			<br><br>
 			<input type='submit' value='Upload' name='Upload'>
 		</div>
 		</form> 
@@ -67,7 +68,7 @@ echo<<<_END
 	}
 
 	header {
-		background: #3D6AA4;
+		background: #202933;
 	}
 
 	header::after {
