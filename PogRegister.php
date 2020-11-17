@@ -76,9 +76,7 @@ echo <<<_END
   <input type="submit" name="registerButton" class="button-back" value="Register">
   <input type="submit" name="backButton" class="button-action" value="Back">
 </form>
-
-
-  </body>
+</body>
 </html>
 _END;
 
