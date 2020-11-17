@@ -6,7 +6,7 @@ session_start();
 
 echo <<<_END
 		<style>
-			.Page-Body{background-color:#64A0FF;}
+			.Page-Body{background-color:#34495e;}
 			.POG-Title{text-align: center;}
 			.Main-Page-Link{
 				text-decoration:none;
