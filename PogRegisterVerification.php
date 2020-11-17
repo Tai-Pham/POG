@@ -8,36 +8,43 @@
 		{
 			http_response_code(503);
 			echo json_encode(array("message" => "Please fill out a username."));
+			// echo "Please fill out a username. <br>";
 		}
 		else if (searchUsername($conn, $username) == TRUE)
 		{
 			http_response_code(503);
 			echo json_encode(array("message" => "Username is taken."));
+			// echo "Username is taken. <br>";
 		}
 		else if (isEmpty($password))
 		{
 			http_response_code(503);
 			echo json_encode(array("message" => "Please fill out a password."));
+			// echo "Please fill out a password. <br>";
 		}
 		else if (isEmpty($repeatedPassword))
 		{
 			http_response_code(503);
 			echo json_encode(array("message" => "Please fill out the repeated password."));
+			// echo "Please fill out the repeated password. <br>";
 		}
 		else if (isEmpty($email))
 		{
 			http_response_code(503);
 			echo json_encode(array("message" => "Please fill out an email."));
+			// echo "Please fill out an email. <br>";
 		}
 		else if (searchEmail($conn, $email) == TRUE)
 		{
 			http_response_code(503);
 			echo json_encode(array("message" => "Email is in use."));
+			// echo "Email is in use. <br>";
 		}
 		else if ($password != $repeatedPassword)
 		{
 			http_response_code(503);
 			echo json_encode(array("message" => "The passwords do not match."));
+			echo "The passwords do not match. <br>";
 		}
 		else
 		{
@@ -59,6 +66,7 @@
 		{
 			return false;
 		}
+		
 		return true;
 	}
 	
@@ -213,4 +221,30 @@
 		verifyRegister($username, $password, $repeatedPassword, $email, $conn);
 	}
 	
+	// Closing connection
+	$conn->close();
+	
+	// Error msg
+	function error()
+	{
+	  echo "░░░░░░░░░▄░░░░░░░░░░░░░░▄░░░░<br>";
+	  echo "░░░░░░░░▌▒█░░░░░░░░░░░▄▀▒▌░░░<br>";
+	  echo "░░░░░░░░▌▒▒█░░░░░░░░▄▀▒▒▒▐░░░<br>";
+	  echo "░░░░░░░▐▄▀▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐░░░<br>";
+	  echo "░░░░░▄▄▀▒░▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐░░░<br>";
+	  echo "░░░▄▀▒▒▒░░░▒▒▒░░░▒▒▒▀██▀▒▌░░░ <br>";
+	  echo "░░▐▒▒▒▄▄▒▒▒▒░░░▒▒▒▒▒▒▒▀▄▒▒▌░░<br>";
+	  echo "░░▌░░▌█▀▒▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐░░<br>";
+	  echo "░▐░░░▒▒▒▒▒▒▒▒▌██▀▒▒░░░▒▒▒▀▄▌░<br>";
+	  echo "░▌░▒▄██▄▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▌░<br>";
+	  echo "▀▒▀▐▄█▄█▌▄░▀▒▒░░░░░░░░░░▒▒▒▐░<br>";
+	  echo "▐▒▒▐▀▐▀▒░▄▄▒▄▒▒▒▒▒▒░▒░▒░▒▒▒▒▌<br>";
+	  echo "▐▒▒▒▀▀▄▄▒▒▒▄▒▒▒▒▒▒▒▒░▒░▒░▒▒▐░<br>";
+	  echo "░▌▒▒▒▒▒▒▀▀▀▒▒▒▒▒▒░▒░▒░▒░▒▒▒▌░<br>";
+	  echo "░▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▄▒▒▐░░<br>";
+	  echo "░░▀▄▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▄▒▒▒▒▌░░<br>";
+	  echo "░░░░▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀░░░<br>";
+	  echo "░░░░░░▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀░░░░░<br>";
+	  echo "░░░░░░░░░▒▒▒▒▒▒▒▒▒▒▀▀░░░░░░░░<br>";
+	}
 ?>
