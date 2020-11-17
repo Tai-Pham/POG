@@ -15,13 +15,13 @@ body {text-align: center;}
 <pre>
 <span style='color:#C5DBFF;font-family:"Comic Sans MS"; font-size:100px'> 
 Username
-<input type='text' name='username' style="height:50px; width:300px; font-size:25px;">
+<input type='text' name='username' class="form-control field-username" style="height:50px; width:300px; font-size:25px;">
 Password
-<input type = 'password' name = 'password' style="height:50px; width:300px; font-size:25px;">
+<input type = 'password' name = 'password' class="form-control field-pass" style="height:50px; width:300px; font-size:25px;">
 
-<input type = 'submit' value = 'Login' name = 'loginButton' style="height:70px; width:150px; font-size:25px;">
+<input type = 'submit' value = 'Login' name = 'loginButton' class="button-login" style="height:70px; width:150px; font-size:25px;">
 
-<input type = 'submit' value = 'Register' name = 'registerButton' style="height:70px; width:150px; font-size:25px;">
+<input type = 'submit' value = 'Register' name = 'registerButton' class="button-register" style="height:70px; width:150px; font-size:25px;">
 <pre></form></body></html>
 _END;
 
