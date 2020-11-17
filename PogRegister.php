@@ -5,7 +5,7 @@ echo <<<_END
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: #34495e;
+  background: #191919;
   text-align: center;
 }
 .box{
