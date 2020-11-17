@@ -33,7 +33,7 @@
 		<!DOCTYPE html>
 
 		<style>
-			.Page-Body{background-color:#64A0FF;}
+			.Page-Body{background-color:#191919;}
 			.POG-Title{text-align: center;}
 			.Main-Page-Link{
 				text-decoration:none;
