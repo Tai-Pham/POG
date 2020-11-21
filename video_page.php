@@ -1,5 +1,6 @@
 <?php 
 	require_once 'login.php';
+	session_start();
 	
 	if(isset($_GET['select']) && isset($_GET['input']))
 	{		
@@ -24,16 +25,107 @@
 
 	}
 	else{
-		header('location: home.php');
+		header('location: PogHomePage.php');
 		exit();
 	}
+
+	$name = $_SESSION['username'];
+
+echo<<<_END
+<style>
+url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+body {
+	margin: 100;
+	background: #222;
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 800;
+}
+
+.container {
+	max-width: 100%;
+	float: right;
+	height: 60px;
+	margin: 0 auto;
+}
+
+header {
+	background: #202933;
+}
+
+header::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+nav {
+	clear: both;
+	float: right;
+}
+
+nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+nav li {
+	display: inline-block;
+	margin-left: 70px;
+	padding-top: 23px;
+
+	position: relative;
+}
+
+nav a {
+	color: white;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
+nav a:hover {
+	color: white;
+	text-decoration: none
+}
+
+nav a::before {
+	content: '';
+	display: block;
+	height: 5px;
+	background-color: white;
+
+	position: absolute;
+	top: 0;
+	width: 0%;
+
+	transition: all ease-in-out 250ms;
+}
+
+nav a:hover::before {
+	width: 100%;
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<html>
+<header>
+	<div class="container">
+	<nav>
+		<ul>
+		<li><a href="#">$name</a></li>
+		<li><a href="?Back">Back</a></li>
+		<li><a href="?PogLogin">Log Out</a></li>
+		</ul>
+	</nav>
+	</div>
+</header>
+_END;
 	
 	echo<<<_END
 	
 		<!DOCTYPE html>
 
 		<style>
-			<!-- change here -->
 			.Page-Body{background-color:#191919;}
 			.POG-Title{text-align: center;}
 			.Main-Page-Link{
@@ -49,7 +141,8 @@
 			.title-creator{
 				text-align: center;
 				margin-right: 550px;
-				font-family:Comic Sans MS;		
+				font-family:Comic Sans MS;
+				color: white;
 			}
 			.title{ font-size:30px; margin:0 }
 			.creator{ font-size:20px; margin:0 }
@@ -87,6 +180,18 @@
 		</html> 
 		
 _END;
+
+if (isset($_GET['Back']))
+{
+	header('location: PogHomePage.php');
+}
+
+if (isset($_GET['PogLogin']))
+{
+	session_unset();
+	session_destroy();
+	header('location: PogLogin.php');
+}
 
 function error()
 {
