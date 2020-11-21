@@ -39,7 +39,12 @@
 			http_response_code(503);
 			echo json_encode(array("message" => "Email is in use."));
 			// echo "Email is in use. <br>";
-		}
+        }
+        else if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        {
+            http_response_code(503);
+			echo json_encode(array("message" => "Email is not valid."));
+        }
 		else if ($password != $repeatedPassword)
 		{
 			http_response_code(503);
