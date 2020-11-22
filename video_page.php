@@ -63,10 +63,9 @@
 		if(isset($_POST['commentbox']) && isset($_POST['commentsubmit'])) {
 			$commentSanitize = sanitizeMySQL($conn, $_POST['commentbox']);
 			$pathSanitize = sanitizeMySql($conn, $path);
-			$timePosted = CURRENT_TIMESTAMP();
 		
-			$insertstmt = mysqli_prepare($conn, 'INSERT INTO comments(userID, videoLocation, comment, username, timestamp) VALUES(?,?,?,?,?)');
-			mysqli_stmt_bind_param($insertstmt, 'ssssi', $_SESSION['accountid'], $output['videoLocation'], $commentSanitize, $_SESSION['username'], $timePosted);
+			$insertstmt = mysqli_prepare($conn, 'INSERT INTO comments(userID, videoLocation, comment, username) VALUES(?,?,?,?)');
+			mysqli_stmt_bind_param($insertstmt, 'ssss', $_SESSION['accountid'], $output['videoLocation'], $commentSanitize, $_SESSION['username']);
 			mysqli_stmt_execute($insertstmt);
 			if(!$insertstmt) die (error() . "<br>");
 			else {
