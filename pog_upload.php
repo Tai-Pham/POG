@@ -1,4 +1,56 @@
 <?php
+//echo <<<_END
+//		<style>
+//			.Page-Body{background-color:#64A0FF;}
+//			.POG-Title{text-align: center;}
+//			.Main-Page-Link{
+//				text-decoration:none;
+//				color:#C5DBFF;
+//				font-family:Comic Sans MS;
+//				font-size:100px;
+//			}
+//			.center{
+//				margin:0;
+//				position: absolute;
+//					top: 50%;
+//					left: 50%;
+//					-ms-transform: translate(-50%, -50%);
+//						transform: translate(-50%, -50%);
+//			}
+//		</style>
+//		<html>
+//		<head lang="en">
+//				<meta charset="UTF-8">
+//				<meta meta name="viewport" content="width=device-width, initial-scale=1.0">
+//				<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+//				<link rel="icon" type="image/png" href="POG-Favicon.png">
+//				<title>POG</title>
+//			</head>
+//		<body class = "Page-Body">
+//		<h1 class="POG-Title"> 	
+//					<a class="Main-Page-Link" href="PogHomePage.php">POG</a>		
+//				</h1>
+//		<form method='post' action='pog_upload.php' enctype='multipart/form-data'>
+//		<div class ="center">
+//			Select Video: <input type='file' name='file'>
+//			<br>
+//			Title <input type = 'text' name = 'title' style="height:25px; width:300px; font-size:10px;">
+//			<br>
+//			<input type='submit' value='Upload' name='Upload'>
+//		</div>
+//		</form> 
+//		</body> 
+//		</html>		
+//_END;
+//
+//require_once 'login.php';
+//
+//session_start();
+require_once 'login.php';
+
+session_start();
+
+
 echo <<<_END
 		<style>
 			.Page-Body{background-color:#64A0FF;}
@@ -34,7 +86,7 @@ echo <<<_END
 		<div class ="center">
 			Select Video: <input type='file' name='file'>
 			<br>
-			Title <input type = 'text' name = 'title' style="height:25px; width:300px; font-size:10px;">
+			Title <input type = 'text' name = 'title' style="height:25px; width:300px; font-size:15px;">
 			<br>
 			<input type='submit' value='Upload' name='Upload'>
 		</div>
@@ -43,9 +95,95 @@ echo <<<_END
 		</html>		
 _END;
 
-require_once 'login.php';
+$name = $_SESSION['username'];
+echo<<<_END
+	<style>
+	url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+	body {
+		margin: 100;
+		background: #222;
+		font-family: 'Work Sans', sans-serif;
+		font-weight: 800;
+	}
 
-session_start();
+	.container {
+		max-width: 100%;
+		float: right;
+		height: 60px;
+		margin: 0 auto;
+	}
+
+	header {
+		background: #3D6AA4;
+	}
+
+	header::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+
+	nav {
+		clear: both;
+		float: right;
+	}
+
+	nav ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	nav li {
+		display: inline-block;
+		margin-left: 70px;
+		padding-top: 23px;
+
+		position: relative;
+	}
+
+	nav a {
+		color: white;
+		text-decoration: none;
+		text-transform: uppercase;
+		font-size: 14px;
+	}
+
+	nav a:hover {
+		color: white;
+	}
+
+	nav a::before {
+		content: '';
+		display: block;
+		height: 5px;
+		background-color: white;
+
+		position: absolute;
+		top: 0;
+		width: 0%;
+
+		transition: all ease-in-out 250ms;
+	}
+
+	nav a:hover::before {
+		width: 100%;
+	}
+	</style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<html>
+	<header>
+		<div class="container">
+		<nav>
+			<ul>
+			<li><a href="#">$name</a></li>
+			<li><a href="?Back">Home</a></li>
+			<li><a href="?PogLogin">Log Out</a></li>
+			</ul>
+		</nav>
+		</div>
+	</header>
+_END;
 
 if(isset($_SESSION['username']))
 {
@@ -96,7 +234,7 @@ function fileUploader($conn)
 		}
 		else
 		{	
-			$vdir = getcwd() . "/vidUploads/";
+			$vdir = "./vidUploads/";
 			$file = $_FILES['file']['name'];
 			switch($_FILES['file']['type'])
 			{

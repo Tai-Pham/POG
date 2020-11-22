@@ -9,6 +9,19 @@
 	define("LIKE_OFF", "👍");
 	define("DISLIKE_OFF", "👎");
 
+	if (isset($_GET['PogLogin']))
+	{
+		session_unset();
+
+		session_destroy();
+		header('location: PogLogin.php');
+	}
+
+	if (isset($_GET['pog_upload']))
+	{
+		header('location: pog_upload.php');
+	}
+
 	require_once 'login.php';
 
 	// Setting time-out for session
@@ -36,6 +49,17 @@
 	}
 
 	$name = $_SESSION['username'];
+	
+	function likeInsert($conn, $uID, $path, $flag) {
+		$likeInsert = mysqli_prepare($conn, 'INSERT INTO likes(userID, videoLocation, likeFlag) VALUES(?, ?, ?)');
+		mysqli_stmt_bind_param($likeInsert, 'ssi', $uID, $path, $flag);
+		mysqli_execute($likeInsert);
+		
+		if(!$likeInsert) die (error() . $conn->error(). "<br>");
+		else {
+			mysqli_stmt_close($likeInsert);
+		}
+	}
 
 	echo<<<_END
 	<style>
@@ -145,9 +169,9 @@ _END;
 				font-family:Comic Sans MS;		
 			}
 			.likes{
-				text-align: left;
+				text-align: center;
 				margin: 5px;
-				margin-left: 135px;
+				margin-right: 300px;
 				padding: 0;
 				font-family:Comic Sans MS;
 			}
@@ -181,7 +205,7 @@ _END;
 	
 	$rows = $result->num_rows;
 	
-	for($i = 0; $i < $rows; $i++){
+	for($i = $rows - 1; $i >= 0; $i--){
 		$output = $result->data_seek($i);
 		$row = $result->fetch_array(MYSQLI_ASSOC);
 		
@@ -207,7 +231,28 @@ _END;
 		
 		$likeOutput = $likeResult->data_seek(0);
 		$likeRow = $likeResult->fetch_array(MYSQLI_ASSOC);
-		$likeStatus = $likeRow['likeFlag'];
+		$likeStatus = 0;
+		if($likeRow != null) {
+			$likeStatus = $likeRow['likeFlag'];
+		}
+		
+		/* Only allow changing like state if it is unset or the opposite is already checked */
+		if(isset($_POST['likeSelect'])) {
+			if($likeStatus == 2) {
+				
+			}
+			else if($likeRow == NULL) {
+				likeInsert($conn, $uID, $path, 1);
+			}
+		}
+		else if(isset($_POST['dislikeSelect'])) {
+			if($likeStatus == 1) {
+				
+			}
+			else if($likeRow == NULL) {
+				likeInsert($conn, $uID, $path, 2);
+			}
+		}
 		
 		$likeStatus == LIKE_SET ? $likeDisplay = LIKE_ON : $likeDisplay = LIKE_OFF;
 		$likeStatus == DISLIKE_SET ? $dislikeDisplay = DISLIKE_ON : $dislikeDisplay = DISLIKE_OFF;
@@ -228,32 +273,21 @@ _END;
 				
 				<div class='likes'>
 					<form class='likes'>$likes Likes</form>
-					<form class='likes' method='get' enctype='multipart/form-data'>
+					<form class='likes' method='post' enctype='multipart/form-data'>
 					<input type='hidden' name='like'>
 					<input style='border:none;background:none' type='submit' name='likeSelect' value='$likeDisplay'; />
-					<form class='likes' method='get' enctype='multipart/form-data'>
+					<form class='likes' method='post' enctype='multipart/form-data'>
 					<input type='hidden' name='dislike'>
 					<input style='border:none;background:none' type='submit' name='dislikeSelect' value='$dislikeDisplay'; />
 					</form>
 				</div>
 			</body>";
+			
+		$likeResult->close();
 	}
 	
 	
 echo "</html>";
-
-if (isset($_GET['PogLogin']))
-{
-	session_unset();
-
-	session_destroy();
-	header('location: PogLogin.php');
-}
-
-if (isset($_GET['pog_upload']))
-{
-	header('location: pog_upload.php');
-}
 
 
 
