@@ -29,7 +29,7 @@ Email
 _END;
 
 require_once 'login.php';
-require_once 'registerVerification.php';
+require_once 'PogRegisterVerification.php';
 
 if (isset($_POST['backButton']))
 {

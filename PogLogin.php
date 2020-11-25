@@ -40,6 +40,7 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['logi
 	
 	if (isEmpty($username))
 	{
+		
 		echo "Please fill out a username. <br>";
 	}
 	else if (isEmpty($password))

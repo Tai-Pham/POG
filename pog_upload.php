@@ -188,7 +188,7 @@ function fileUploader($conn)
 		}
 		else
 		{	
-			$vdir = "vidUploads/";
+			$vdir = "./vidUploads/";
 			$file = $_FILES['file']['name'];
 			switch($_FILES['file']['type'])
 			{
@@ -205,12 +205,15 @@ function fileUploader($conn)
 				$vidLocation = $vdir.$file;
 				$un = $_SESSION['username'];
 				$unID = $_SESSION['accountid']; // <-------- use session to hold the account Id
-				$likes = 0; // <--------- likes will always start at zero
 							
 				if(move_uploaded_file($_FILES["file"]["tmp_name"], $vdir.$file))
 				{
-					$query = "INSERT INTO videos(userID, videoLocation, creator, title, likes) VALUES('$unID', '$vidLocation', '$un', '$vidTitle', '$likes')";
+					$query = "INSERT INTO videos(userID, videoLocation, creator, title, likes, dislikes) VALUES('$unID', '$vidLocation', '$un', '$vidTitle', '0', '0')";
 					mysqli_query($conn, $query);
+					
+					/* Set permissions */
+					chmod($vdir.$file, 0777);
+					
 					echo "Successful upload";
 				}
 			}
@@ -240,7 +243,8 @@ function folderCheck()
 {
 	if (!file_exists(getcwd() . "/vidUploads/"))
 	{
-		mkdir('vidUploads/');
+		mkdir(getcwd() . '/vidUploads/', 0777, true);
+		chmod(getcwd() . '/vidUploads/', 0777);
 	}
 }
 
