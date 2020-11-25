@@ -14,8 +14,6 @@
 	    header('location: pog_upload.php');
 	}
 
-	require_once 'login.php';
-
 	// Setting time-out for session
 	ini_set('session.gc_maxlifetime', 60*60*24);
 

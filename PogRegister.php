@@ -21,9 +21,7 @@ Repeat Password
 <input type = 'password' name = 'repeatedPassword' class="form-control action-reppass" style="height:50px; width:300px; font-size:25px;">
 Email
 <input type = 'text' name = 'email' class="form-control action-email" style="height:50px; width:300px; font-size:25px;">
-
 <input type = 'submit' value = 'Back' name = 'backButton' class="button-back" style="height:70px; width:150px; font-size:25px;">
-
 <input type = 'submit' value = 'Register' class="button-action" name = 'registerButton' style="height:70px; width:150px; font-size:25px;">
 <pre></form></body></html>
 _END;
