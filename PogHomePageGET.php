@@ -19,21 +19,77 @@ for($i = $rows - 1; $i >= 0; $i--){
     $path = $row['videoLocation'];
     $creator = $row['creator'];
     $title = $row['title'];
+    $likes = $row['likes'] - $row['dislikes'];
+    $uID = $_SESSION['accountid'];
+    
+    $likeDisplay;
+	$dislikeDisplay;
+        
+    /* 
+        Query like table to check for like/dislikes status
+        0 = unset
+        1 = liked
+        2 = disliked		
+    */
+    $likeQuery = "SELECT * FROM likes WHERE videoLocation=$path AND userID=$uID";
+    $likeResult = $conn->query($likeQuery);
+    if(!$likeResult) die("Like error: " . error());
+    
+    $likeOutput = $likeResult->data_seek(0);
+    $likeRow = $likeResult->fetch_array(MYSQLI_ASSOC);
+    $likeStatus = 0;
+    if($likeRow != null) {
+        $likeStatus = $likeRow['likeFlag'];
+    }
+    
+    /* Only allow changing like state if it is unset or the opposite is already checked */
+    if(isset($_POST['likeSelect'])) {
+        if($likeStatus == 2) {
+            
+        }
+        else if($likeRow == NULL) {
+            likeInsert($conn, $uID, $path, 1);
+        }
+    }
+    else if(isset($_POST['dislikeSelect'])) {
+        if($likeStatus == 1) {
+            
+        }
+        else if($likeRow == NULL) {
+            likeInsert($conn, $uID, $path, 2);
+        }
+    }
+    
+    $likeStatus == LIKE_SET ? $likeDisplay = LIKE_ON : $likeDisplay = LIKE_OFF;
+    $likeStatus == DISLIKE_SET ? $dislikeDisplay = DISLIKE_ON : $dislikeDisplay = DISLIKE_OFF;
         
     echo "
-    <div class='video-player'>
-        <video src=$path width='640' height='360' controls> </video>
-    </div>
-
-    <div class='title-creator'>
-        <a class='title' href='video_page.php?input=$id&select=$title'>$title</a>
+            <div class='video-player'>
+                <video src=$path width='640' height='360' controls> </video>
+            </div>
+    
+            <div class='title-creator'>
+                <a class='title' href='video_page.php?input=$id&select=$title'>$title</a>
+                
+                <p class='creator'>Uploaded by: $creator</p>
+            </div>	
+            
+            <div class='likes'>
+                <form class='likes'>$likes Likes</form>
+                <form class='likes' method='post' enctype='multipart/form-data'>
+                <input type='hidden' name='like'>
+                <input style='border:none;background:none' type='submit' name='likeSelect' value='$likeDisplay'; />
+                <form class='likes' method='post' enctype='multipart/form-data'>
+                <input type='hidden' name='dislike'>
+                <input style='border:none;background:none' type='submit' name='dislikeSelect' value='$dislikeDisplay'; />
+                </form>
+            </div>
+        </body>";
         
-        <p class='creator'>$creator</p>
-    </div>	
-</body>";
+    $likeResult->close();
 }
-
-
+	
+	
 echo "</html>";
 
 function error()
