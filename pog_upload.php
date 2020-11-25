@@ -1,51 +1,4 @@
 <?php
-//echo <<<_END
-//		<style>
-//			.Page-Body{background-color:#64A0FF;}
-//			.POG-Title{text-align: center;}
-//			.Main-Page-Link{
-//				text-decoration:none;
-//				color:#C5DBFF;
-//				font-family:Comic Sans MS;
-//				font-size:100px;
-//			}
-//			.center{
-//				margin:0;
-//				position: absolute;
-//					top: 50%;
-//					left: 50%;
-//					-ms-transform: translate(-50%, -50%);
-//						transform: translate(-50%, -50%);
-//			}
-//		</style>
-//		<html>
-//		<head lang="en">
-//				<meta charset="UTF-8">
-//				<meta meta name="viewport" content="width=device-width, initial-scale=1.0">
-//				<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-//				<link rel="icon" type="image/png" href="POG-Favicon.png">
-//				<title>POG</title>
-//			</head>
-//		<body class = "Page-Body">
-//		<h1 class="POG-Title"> 	
-//					<a class="Main-Page-Link" href="PogHomePage.php">POG</a>		
-//				</h1>
-//		<form method='post' action='pog_upload.php' enctype='multipart/form-data'>
-//		<div class ="center">
-//			Select Video: <input type='file' name='file'>
-//			<br>
-//			Title <input type = 'text' name = 'title' style="height:25px; width:300px; font-size:10px;">
-//			<br>
-//			<input type='submit' value='Upload' name='Upload'>
-//		</div>
-//		</form> 
-//		</body> 
-//		</html>		
-//_END;
-//
-//require_once 'login.php';
-//
-//session_start();
 require_once 'login.php';
 
 session_start();
@@ -225,6 +178,7 @@ function fileUploader($conn)
 		$size = $_FILES['file']['size'];
 		if (!($_FILES['file']['name'])) 
 		{
+			
 			echo "No video has been selected. <br>";
 		}
 		if ($size > $max_upload_size)
@@ -269,6 +223,20 @@ function fileUploader($conn)
 			}
 		}
 	}
+}
+
+
+if (isset($_GET['PogLogin']))
+{
+	session_unset();
+
+	session_destroy();
+	header('location: PogLogin.php');
+}
+
+if (isset($_GET['Back']))
+{
+	header('location: PogHomePage.php');
 }
 
 function folderCheck()

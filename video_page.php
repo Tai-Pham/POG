@@ -44,6 +44,7 @@
 	{
 	
 		/* Load all relevant content for video */
+
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) die (error());
 		

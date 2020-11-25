@@ -8,27 +8,18 @@
 	define("DISLIKE_ON", "👎 ✅");
 	define("LIKE_OFF", "👍");
 	define("DISLIKE_OFF", "👎");
+  
+  require_once 'login.php';
 
 	if (isset($_GET['PogLogin']))
 	{
 		session_unset();
 
-		session_destroy();
-		header('location: PogLogin.php');
-	}
+    // Setting time-out for session
+    ini_set('session.gc_maxlifetime', 60*60*24);
 
-	if (isset($_GET['pog_upload']))
-	{
-		header('location: pog_upload.php');
-	}
-
-	require_once 'login.php';
-
-	// Setting time-out for session
-	ini_set('session.gc_maxlifetime', 60*60*24);
-
-	session_start();
-
+    session_start();
+  }
 	// Checks if a username is inputted
 	if (!isset($_SESSION['username']))
 	{
@@ -73,6 +64,7 @@
 
 	.container {
 		max-width: 100%;
+		float: right;
 		height: 60px;
 		margin: 0 auto;
 	}
@@ -141,7 +133,7 @@
 		<nav>
 			<ul>
 			<li><a href="#">$name</a></li>
-			<li><a href="?pog_upload">Upload</a></li>
+			<li><a href="?Upload">Upload</a></li>
 			<li><a href="?PogLogin">Log Out</a></li>
 			</ul>
 		</nav>
@@ -175,8 +167,14 @@ _END;
 				padding: 0;
 				font-family:Comic Sans MS;
 			}
-			.title{ font-size:30px; margin:0; padding: 0; }
 			.creator{ font-size:20px; margin:0; margin-left: 30px }
+			.title{ font-size:30px; 
+				margin:0; 
+				padding: 0; 
+				text-decoration:none;
+				color:#000000;
+				font-family:Comic Sans MS;}
+			.creator{ font-size:20px; margin:0 }
 	
 		</style>
 		<html>
@@ -263,10 +261,7 @@ _END;
 				</div>
 		
 				<div class='title-creator'>
-					<form class='title' method='get' action='video_page.php' enctype='multipart/form-data'>
-					<input type='hidden' value=$id name='input'>
-					<input style='border:none;background:none' type='submit' name='select' value='$title' />
-					</form>
+					<a class='title' href='video_page.php?input=$id&select=$title'>$title</a>
 					
 					<p class='creator'>Uploaded by: $creator</p>
 				</div>	
@@ -290,6 +285,18 @@ _END;
 echo "</html>";
 
 
+if (isset($_GET['Upload']))
+{
+	header('location: pog_upload.php');
+}
+
+if (isset($_GET['PogLogin']))
+{
+	session_unset();
+
+	session_destroy();
+	header('location: PogLogin.php');
+}
 
 
 function error()
