@@ -15,15 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE TABLE `Home Page` (
-	`userID` int(255) NOT NULL,
-	`username` varchar(255) NOT NULL,
-	`title` varchar(255) NOT NULL,
-	`likes` INT(45) NOT NULL,
-	`videoLocation` varchar(255) NOT NULL,
-	PRIMARY KEY (`userID`)
-)
-
 --
 -- Table structure for table `videos`
 --
@@ -32,22 +23,19 @@ DROP TABLE IF EXISTS `videos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `videos` (
+  `userID` int NOT NULL,
   `videoID` int NOT NULL AUTO_INCREMENT,
   `videoLocation` varchar(255) NOT NULL,
   `creator` varchar(45) NOT NULL,
   `title` varchar(45) NOT NULL,
+  `likes` int NOT NULL,
+  `dislikes` int NOT NULL,
   PRIMARY KEY (`videoID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `videos`
---
-
 LOCK TABLES `videos` WRITE;
-/*!40000 ALTER TABLE `videos` DISABLE KEYS */;
-INSERT INTO `videos` VALUES ('C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ROOT\\Videos\\league.jpg','Thomas','League of Legends'),('C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ROOT\\Videos\\maxresdefault.jpg','Thomas','Minecraft');
-/*!40000 ALTER TABLE `videos` ENABLE KEYS */;
+
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -58,24 +46,3 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2020-10-02 13:33:56
-
-DROP TABLE IF EXISTS `comments`;
-
-CREATE TABLE `comments` (
-	`userID` int(255) NOT NULL,
-	`username` varchar(255) NOT NULL,
-	`comment` varchar(255) NOT NULL,
-	`videoLocation` varchar(255) NOT NULL,
-	PRIMARY KEY (`userID`)
-)
-
-DROP TABLE IF EXISTS `accountvideos`;
-
-CREATE TABLE `accountvideos` (
-	`videoLocation` varchar(255) NOT NULL,
-	`likes` INT(45) NOT NULL,
-	`userID` varchar(45) NOT NULL,
-	PRIMARY KEY (`userID`)
-)

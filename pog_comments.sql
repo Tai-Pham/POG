@@ -23,12 +23,13 @@ DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comments` (
+  `commentId` int NOT NULL AUTO_INCREMENT,
   `userID` int NOT NULL,
-  `videoLocation` varchar(45) NOT NULL,
-  `comment` varchar(45) NOT NULL,
+  `videoLocation` varchar(255) NOT NULL,
+  `comment` varchar(140) NOT NULL,
   `username` varchar(45) NOT NULL,
-  `hash` varchar(45) NOT NULL,
-  PRIMARY KEY (`userID`)
+  `timestamp` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`commentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

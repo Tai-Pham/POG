@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "24213939-30d1-42a3-8a06-a1d0711621ae",
+		"name": "Piplup Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register Verification [Blank username]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "41659ec1-b777-44ed-a996-df77c46fd913",
+						"exec": [
+							"pm.test(\"Status code should return 503 for no username\", ",
+							"    function () { ",
+							"        pm.response.to.have.status(503)",
+							"        pm.expect(pm.response.text()).to.include(\"Please fill out a username.\")",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "repeatedPassword",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "registerButton",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/school/CS%20160/joshuabranch/cs-160-team-piplup/registerVerification.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"school",
+						"CS%20160",
+						"joshuabranch",
+						"cs-160-team-piplup",
+						"registerVerification.php"
+					]
+				},
+				"description": "Tests all failures in register inputs"
+			},
+			"response": []
+		},
+		{
+			"name": "Register Verification [Blank password]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cfcd50a4-1b4b-4da7-8c7b-998e8cd75c72",
+						"exec": [
+							"pm.test(\"Status code should return 503 for no password\", ",
+							"    function () { ",
+							"        pm.response.to.have.status(503)",
+							"        pm.expect(pm.response.text()).to.include(\"Please fill out a password.\")",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "foobar123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "repeatedPassword",
+							"value": "foopass123",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "foo@foo.com",
+							"type": "text"
+						},
+						{
+							"key": "registerButton",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/school/CS%20160/joshuabranch/cs-160-team-piplup/registerVerification.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"school",
+						"CS%20160",
+						"joshuabranch",
+						"cs-160-team-piplup",
+						"registerVerification.php"
+					]
+				},
+				"description": "Tests all failures in register inputs"
+			},
+			"response": []
+		},
+		{
+			"name": "Register Verification [Complete fields]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3e1dd5ee-b117-4e9e-84d1-55b2dc43e72c",
+						"exec": [
+							"pm.test(\"Status code should return 201 for successful account creation\", ",
+							"    function () { ",
+							"        pm.response.to.have.status(201)",
+							"        pm.expect(pm.response.text()).to.include(\"User creation successful.\")",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "foobar123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "foopass321",
+							"type": "text"
+						},
+						{
+							"key": "repeatedPassword",
+							"value": "foopass321",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "foo@foo.com",
+							"type": "text"
+						},
+						{
+							"key": "registerButton",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/school/CS%20160/joshuabranch/cs-160-team-piplup/registerVerification.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"school",
+						"CS%20160",
+						"joshuabranch",
+						"cs-160-team-piplup",
+						"registerVerification.php"
+					]
+				},
+				"description": "Tests all failures in register inputs"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

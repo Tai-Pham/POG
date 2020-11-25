@@ -1,4 +1,13 @@
 <?php
+define("LIKE_SET", 1);
+define("DISLIKE_SET", 2);
+define("NOLIKE_SET", 0);
+define("LIKE_SEARCH", 0);
+define("LIKE_ON", "👍 ✅");
+define("DISLIKE_ON", "👎 ✅");
+define("LIKE_OFF", "👍");
+define("DISLIKE_OFF", "👎");
+
 require_once 'login.php';
 
 // Setting time-out for session
@@ -26,6 +35,17 @@ if (!isset($_SESSION['initiated']))
 }
 
 $name = $_SESSION['username'];
+
+function likeInsert($conn, $uID, $path, $flag) {
+	$likeInsert = mysqli_prepare($conn, 'INSERT INTO likes(userID, videoLocation, likeFlag) VALUES(?, ?, ?)');
+	mysqli_stmt_bind_param($likeInsert, 'ssi', $uID, $path, $flag);
+	mysqli_execute($likeInsert);
+	
+	if(!$likeInsert) die (error() . $conn->error(). "<br>");
+	else {
+		mysqli_stmt_close($likeInsert);
+	}
+}
 
 echo<<<_END
 <style>
@@ -136,13 +156,23 @@ echo<<<_END
 			margin-right: 550px;
 			font-family:Comic Sans MS;		
 		}
+		.likes{
+			text-align: center;
+			margin: 5px;
+			margin-right: 300px;
+			padding: 0;
+			font-family:Comic Sans MS;
+		}
 		.title{ font-size:30px; 
 			margin:0; 
 			padding: 0; 
 			text-decoration:none;
 			color:#000000;
 			font-family:Comic Sans MS;}
-		.creator{ font-size:20px; margin:0 
+		.creator{ 
+			font-size:20px; 
+			margin:0; 
+			margin-left: 30px 
 		}
 
 		a:hover {
