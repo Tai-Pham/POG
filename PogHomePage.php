@@ -1,12 +1,4 @@
 <?php
-define("LIKE_SET", 1);
-define("DISLIKE_SET", 2);
-define("NOLIKE_SET", 0);
-define("LIKE_SEARCH", 0);
-define("LIKE_ON", "👍 ✅");
-define("DISLIKE_ON", "👎 ✅");
-define("LIKE_OFF", "👍");
-define("DISLIKE_OFF", "👎");
 
 require_once 'login.php';
 
@@ -153,11 +145,13 @@ echo<<<_END
 		}
 		.title-creator{
 			text-align: center;
+			color: white;
 			margin-right: 550px;
 			font-family:Comic Sans MS;		
 		}
 		.likes{
 			text-align: center;
+			color: white;
 			margin: 5px;
 			margin-right: 300px;
 			padding: 0;
@@ -167,7 +161,7 @@ echo<<<_END
 			margin:0; 
 			padding: 0; 
 			text-decoration:none;
-			color:#000000;
+			color: white;
 			font-family:Comic Sans MS;}
 		.creator{ 
 			font-size:20px; 

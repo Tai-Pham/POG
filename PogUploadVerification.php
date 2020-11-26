@@ -174,7 +174,6 @@ _END;
 				{
 					$query = "INSERT INTO videos(userID, videoLocation, creator, title, likes, dislikes) VALUES('$unID', '$vidLocation', '$un', '$vidTitle', '$likes', '$likes')";
 					mysqli_query($conn, $query);
-					echo "<br> s";
 					echo <<<_END
 		<html>
 		<head>

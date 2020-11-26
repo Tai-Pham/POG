@@ -1,6 +1,15 @@
 <?php
 require_once 'login.php';
 
+define("LIKE_SET", 1);
+define("DISLIKE_SET", 2);
+define("NOLIKE_SET", 0);
+define("LIKE_SEARCH", 0);
+define("LIKE_ON", "👍 ✅");
+define("DISLIKE_ON", "👎 ✅");
+define("LIKE_OFF", "👍");
+define("DISLIKE_OFF", "👎");
+
 $conn = new mysqli($hn, $un, $pw, $db);
 if ($conn->connect_error) die (error());
 
@@ -16,7 +25,7 @@ for($i = $rows - 1; $i >= 0; $i--){
     $row = $result->fetch_array(MYSQLI_ASSOC);
     
     $id = $row['videoID'];
-    $path = $row['videoLocation'];
+    $path = "\"" . $row['videoLocation'] . "\"";
     $creator = $row['creator'];
     $title = $row['title'];
     $likes = $row['likes'] - $row['dislikes'];
@@ -33,7 +42,7 @@ for($i = $rows - 1; $i >= 0; $i--){
     */
     $likeQuery = "SELECT * FROM likes WHERE videoLocation=$path AND userID=$uID";
     $likeResult = $conn->query($likeQuery);
-    if(!$likeResult) die("Like error: " . error());
+    if(!$likeResult) die("Like error: " . $likeResult->error);
     
     $likeOutput = $likeResult->data_seek(0);
     $likeRow = $likeResult->fetch_array(MYSQLI_ASSOC);
@@ -70,7 +79,6 @@ for($i = $rows - 1; $i >= 0; $i--){
     
             <div class='title-creator'>
                 <a class='title' href='video_page.php?input=$id&select=$title'>$title</a>
-                
                 <p class='creator'>Uploaded by: $creator</p>
             </div>	
             
