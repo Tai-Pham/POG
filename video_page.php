@@ -1,23 +1,9 @@
 <?php
 require_once 'login.php';
-	
-	define("LIKE_SET", 1);
-	define("DISLIKE_SET", 2);
-	define("NOLIKE_SET", 0);
-	define("INSERT", 0);
-	define("UPDATE", 1);
-	define("UPDATE_COUNT", 2);
-	define("LIKE", 1);
-	define("DISLIKE", 2);
-	define("LIKE_SEARCH", 0);
-	define("LIKE_UNSET", 1);
-	define("DISLIKE_UNSET", 2);
-	define("NULL_UNSET", 0);
-	define("LIKE_ON", "👍 ✅");
-	define("DISLIKE_ON", "👎 ✅");
-	define("LIKE_OFF", "👍");
-	define("DISLIKE_OFF", "👎");
+require_once 'likeFunc.php';
 
+define("COMMENTS_SORT_DES", 0);
+define("COMMENTS_SORT_ASC", 1);
 	
 	if (isset($_GET['PogLogin']))
 	{
@@ -72,42 +58,23 @@ require_once 'login.php';
 		
 		$output = $result->fetch_array(MYSQLI_ASSOC);
 	
-		$path = $output['videoLocation'];
+		$path = "\"" . $output['videoLocation'] . "\"";
 		$creator = $output['creator'];
 		$title = $output['title'];
-		$likes = $output['likes'] - $output['dislikes'];
+		$likes = $output['likes'];
+		$dislikes = $output['dislikes'];
 		$uID = $_SESSION['accountid'];
-		
-		$likeDisplay;
-		$dislikeDisplay;
-		    
-		/* 
-		    Query like table to check for like/dislikes status
-		    0 = unset
-		    1 = liked
-		    2 = disliked		
-		*/
-		$likeQuery = "SELECT * FROM likes WHERE videoLocation='$path' AND userID=$uID";
-		$likeResult = $conn->query($likeQuery);
-		if(!$likeResult) die("Like error: " . $likeResult->error);
-		
-		$likeOutput = $likeResult->data_seek(0);
-		$likeRow = $likeResult->fetch_array(MYSQLI_ASSOC);
-		$likeStatus = 0;
-		if($likeRow != null) {
-		    $likeStatus = $likeRow['likeFlag'];
-		}
-		
-		print_r($_POST);
-		
+		$commentQuery = mysqli_query($conn, "SELECT * FROM comments WHERE videoLocation=$path ORDER BY timestamp DESC");
+		$likeStatus = likeQuery($conn, $path, $uID);
+
 		/* Only allow changing like state if it is unset or the opposite is already checked */
 		if(isset($_POST['likeSelect'])) {
-			if($likeRow == null) {
+			if($likeStatus == -1) {
 				like($conn, $uID, $path, LIKE, INSERT, NULL_UNSET);
 			}
 		    else if($likeStatus == DISLIKE) {
-		        like($conn, $uID, $path, LIKE, UPDATE, DISLIKE_UNSET);
-		        like($conn, $uID, $path, LIKE, UPDATE, LIKE_UNSET);
+		        like($conn, $uID, $path, NOLIKE_SET, UPDATE, DISLIKE_UNSET);
+	        	like($conn, $uID, $path, LIKE, UPDATE, NULL_UNSET);
 		    }
 		    else if($likeStatus == LIKE) {
 		    	like($conn, $uID, $path, NOLIKE_SET, UPDATE, LIKE_UNSET);
@@ -117,12 +84,12 @@ require_once 'login.php';
 		    }
 		}
 		else if(isset($_POST['dislikeSelect'])) {
-		    if($likeRow == null) {
+		    if($likeStatus == -1) {
 		        like($conn, $uID, $path, DISLIKE, INSERT, NULL_UNSET);
 		    }
 		    else if($likeStatus == LIKE) {
-		        like($conn, $uID, $path, DISLIKE, UPDATE, LIKE_UNSET);
-		        like($conn, $uID, $path, DISLIKE, UPDATE, DISLIKE_UNSET);
+	        like($conn, $uID, $path, NOLIKE_SET, UPDATE, LIKE_UNSET);
+	        like($conn, $uID, $path, DISLIKE, UPDATE, NULL_UNSET);
 		    }
 		    else if($likeStatus == DISLIKE) {
 		    	like($conn, $uID, $path, NOLIKE_SET, UPDATE, DISLIKE_UNSET);
@@ -150,9 +117,17 @@ require_once 'login.php';
 		}
 		
 		/* Query all comments for the specific video */
+		if(isset($_POST['commentsort'])) {
+			if(hash_equals($_POST['sort'], 'newest')) {
+				$commentQuery = mysqli_query($conn, "SELECT * FROM comments WHERE videoLocation=$path ORDER BY timestamp DESC");
+			}
+			else if(hash_equals($_POST['sort'], 'oldest')) {
+				$commentQuery = mysqli_query($conn, "SELECT * FROM comments WHERE videoLocation=$path ORDER BY timestamp ASC");
+			}
+		}
+		
 		$commentString = "";
 		
-		$commentQuery = mysqli_query($conn, "SELECT * FROM comments WHERE videoLocation='$path'");
 		if(!$commentQuery) die(error());
 		if($commentQuery->num_rows == 0) {
 			$commentString = "No comments, yet.<br>";
@@ -320,6 +295,14 @@ if (isset($_GET['PogLogin']))
 				padding: 0;
 				font-family:Comic Sans MS;
 			}
+			.likestats{
+				text-align: center;
+				color: white;
+				margin: 5px;
+				margin-right: 550px;
+				padding: 0;
+				font-family:Comic Sans MS;
+			}
 			.title{ font-size:30px; margin:0; color: white; }
 			.creator{ font-size:20px; margin:0 }
 			a:hover {
@@ -405,15 +388,15 @@ if (isset($_GET['PogLogin']))
 		
 				<div class="title-creator">
 					<p class="title">$title</p>
-					<p class="creator">$creator</p>
+					<p class="creator">$creator</p><br>
+					$likes Likes, $dislikes Dislikes
 				</div>
-				
+
 				<div class='likes'>
-		            <form class='likes'>$likes Likes</form>
 		            <form class='likes' method='post' enctype='multipart/form-data'>
-		            <input style='border:none;background:none' action='video_page.php' type='submit' name='likeSelect' value='$likeDisplay'; />
+		            <input style='border:none;background:none' type='submit' name='likeSelect' value='$likeDisplay'; />
 		            <form class='likes' method='post' enctype='multipart/form-data'>
-		            <input style='border:none;background:none' action='video_page.php' type='submit' name='dislikeSelect' value='$dislikeDisplay'; />
+		            <input style='border:none;background:none' type='submit' name='dislikeSelect' value='$dislikeDisplay'; />
 		            </form>
             	</div>
 
@@ -424,12 +407,18 @@ if (isset($_GET['PogLogin']))
 			  	</form>
 
 				<p class="comment-title"><br>Comments:</p>
+				
+				<form class='comments' method='post' enctype='multipart/form-data'>
+					Sort by:<br>
+					<input type="radio" id="sortnewest" name="sort" value="newest">
+					<label for="sortnewest">Newest comments shown first</label><br>
+					<input type="radio" id="sortoldest" name="sort" value="oldest">
+					<label for="sortnewest">Oldest comments shown first</label><br>
+					<input type='submit' value='Sort' name='commentsort' action='video_page.php'><br><br>
+				</form>
 				<p class="comments">$commentString</p>
-
-			</body>
-			
-		</html> 
-		
+			</body>		
+		</html>
 _END;
 
 // Sanitizing input
@@ -447,84 +436,6 @@ function sanitizeString($var)
 	$var = strip_tags($var);
 	$var = htmlentities($var);
 	return $var;
-}
-
-/* 
-	Mode:
-	0: Insert a like/dislike into the likes table
-	1: Update a like/dislike into the likes table
-	2: Reflect like count in videos table
-	
-	Unset:
-	1: Unset a like
-	2: Unset a dislike
-	0: No unset action
-*/
-function like($conn, $uID, $path, $flag, $mode, $unset) {
-	if($mode == INSERT) {
-		$likeInsert = mysqli_prepare($conn, 'INSERT INTO likes(userID, videoLocation, likeFlag) VALUES(?, ?, ?)');
-		mysqli_stmt_bind_param($likeInsert, 'ssi', $uID, $path, $flag);
-		mysqli_execute($likeInsert);
-		
-		if(!$likeInsert) die (error() . $conn->error(). "<br>");
-		else {
-			mysqli_stmt_close($likeInsert);
-		}
-		like($conn, $uID, $path, $flag, UPDATE_COUNT, NULL_UNSET);
-	}
-	else if($mode == UPDATE) {
-		$likeUpdate = mysqli_prepare($conn, 'UPDATE likes SET likeFlag=? WHERE videoLocation=?');
-		mysqli_stmt_bind_param($likeUpdate, 'is', $flag, $path);
-		mysqli_execute($likeUpdate);
-		
-		if(!$likeUpdate) die (error() . $conn->error(). "<br>");
-		else {
-			mysqli_stmt_close($likeUpdate);
-		}
-		
-		if($flag == LIKE || $flag == DISLIKE) {
-			like($conn, $uID, $path, $flag, UPDATE_COUNT, NULL_UNSET);
-		}
-		else if($flag == NOLIKE_SET) {
-			if($unset == LIKE_UNSET) {
-				like($conn, $uID, $path, $flag, UPDATE_COUNT, LIKE_UNSET);
-			} 
-			else if($unset == DISLIKE_UNSET) {
-				like($conn, $uID, $path, $flag, UPDATE_COUNT, DISLIKE_UNSET);
-			}
-		}
-		else {
-			print_r("Invalid flag value! <br>");
-		}
-	}
-	else if($mode == UPDATE_COUNT) {
-		$likeCountUpdate;
-		if($flag == LIKE || $flag == NOLIKE_SET) {
-			if($unset == LIKE_UNSET) {
-				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET likes = likes - 1 WHERE videoLocation=?');
-			} else {
-				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET likes = likes + 1 WHERE videoLocation=?');
-			}
-		}
-		else if($flag == DISLIKE || $flag == NOLIKE_SET) {
-			if($unset == DISLIKE_UNSET) {
-				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET dislikes = dislikes - 1 WHERE videoLocation=?');
-			} else {
-				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET dislikes = dislikes + 1 WHERE videoLocation=?');
-			}
-		}
-		
-		mysqli_stmt_bind_param($likeCountUpdate, 's', $path);
-		mysqli_execute($likeCountUpdate);
-		
-		if(!$likeCountUpdate) die (error() . $conn->error(). "<br>");
-		else {
-			mysqli_stmt_close($likeCountUpdate);
-		}
-	}
-	else {
-		print_r("Like mode not specified!<br>");
-	}
 }
 
 function error()
