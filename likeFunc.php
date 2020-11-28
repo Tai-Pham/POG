@@ -85,18 +85,26 @@ function like($conn, $uID, $path, $flag, $mode, $unset) {
 	}
 	else if($mode == UPDATE_COUNT) {
 		$likeCountUpdate;
-		if($flag == LIKE || $flag == NOLIKE_SET) {
+		if($flag == LIKE) {
 			if($unset == LIKE_UNSET) {
 				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET likes = likes - 1 WHERE videoLocation=?');
 			} else {
 				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET likes = likes + 1 WHERE videoLocation=?');
 			}
 		}
-		else if($flag == DISLIKE || $flag == NOLIKE_SET) {
+		else if($flag == DISLIKE) {
 			if($unset == DISLIKE_UNSET) {
 				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET dislikes = dislikes - 1 WHERE videoLocation=?');
 			} else {
 				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET dislikes = dislikes + 1 WHERE videoLocation=?');
+			}
+		}
+		else if($flag == NOLIKE_SET) {
+			if($unset == LIKE_UNSET) {
+				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET likes = likes - 1 WHERE videoLocation=?');
+			}
+			else if($unset == DISLIKE_UNSET) {
+				$likeCountUpdate = mysqli_prepare($conn, 'UPDATE videos SET dislikes = dislikes - 1 WHERE videoLocation=?');
 			}
 		}
 		

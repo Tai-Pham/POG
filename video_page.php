@@ -1,6 +1,9 @@
 <?php
 require_once 'login.php';
 require_once 'likeFunc.php';
+
+define("COMMENTS_SORT_DES", 0);
+define("COMMENTS_SORT_ASC", 1);
 	
 	if (isset($_GET['PogLogin']))
 	{
@@ -58,22 +61,20 @@ require_once 'likeFunc.php';
 		$path = "\"" . $output['videoLocation'] . "\"";
 		$creator = $output['creator'];
 		$title = $output['title'];
-		$likes = $output['likes'] - $output['dislikes'];
+		$likes = $output['likes'];
+		$dislikes = $output['dislikes'];
 		$uID = $_SESSION['accountid'];
-		
-		$likeDisplay;
-		$dislikeDisplay;
-		
+		$commentQuery = mysqli_query($conn, "SELECT * FROM comments WHERE videoLocation=$path ORDER BY timestamp DESC");
 		$likeStatus = likeQuery($conn, $path, $uID);
-		
+
 		/* Only allow changing like state if it is unset or the opposite is already checked */
 		if(isset($_POST['likeSelect'])) {
 			if($likeStatus == -1) {
 				like($conn, $uID, $path, LIKE, INSERT, NULL_UNSET);
 			}
 		    else if($likeStatus == DISLIKE) {
-		        like($conn, $uID, $path, LIKE, UPDATE, DISLIKE_UNSET);
-		        like($conn, $uID, $path, LIKE, UPDATE, LIKE_UNSET);
+		        like($conn, $uID, $path, NOLIKE_SET, UPDATE, DISLIKE_UNSET);
+	        	like($conn, $uID, $path, LIKE, UPDATE, NULL_UNSET);
 		    }
 		    else if($likeStatus == LIKE) {
 		    	like($conn, $uID, $path, NOLIKE_SET, UPDATE, LIKE_UNSET);
@@ -87,8 +88,8 @@ require_once 'likeFunc.php';
 		        like($conn, $uID, $path, DISLIKE, INSERT, NULL_UNSET);
 		    }
 		    else if($likeStatus == LIKE) {
-		        like($conn, $uID, $path, DISLIKE, UPDATE, LIKE_UNSET);
-		        like($conn, $uID, $path, DISLIKE, UPDATE, DISLIKE_UNSET);
+	        like($conn, $uID, $path, NOLIKE_SET, UPDATE, LIKE_UNSET);
+	        like($conn, $uID, $path, DISLIKE, UPDATE, NULL_UNSET);
 		    }
 		    else if($likeStatus == DISLIKE) {
 		    	like($conn, $uID, $path, NOLIKE_SET, UPDATE, DISLIKE_UNSET);
@@ -116,9 +117,17 @@ require_once 'likeFunc.php';
 		}
 		
 		/* Query all comments for the specific video */
+		if(isset($_POST['commentsort'])) {
+			if(hash_equals($_POST['sort'], 'newest')) {
+				$commentQuery = mysqli_query($conn, "SELECT * FROM comments WHERE videoLocation=$path ORDER BY timestamp DESC");
+			}
+			else if(hash_equals($_POST['sort'], 'oldest')) {
+				$commentQuery = mysqli_query($conn, "SELECT * FROM comments WHERE videoLocation=$path ORDER BY timestamp ASC");
+			}
+		}
+		
 		$commentString = "";
 		
-		$commentQuery = mysqli_query($conn, "SELECT * FROM comments WHERE videoLocation='$path'");
 		if(!$commentQuery) die(error());
 		if($commentQuery->num_rows == 0) {
 			$commentString = "No comments, yet.<br>";
@@ -286,6 +295,14 @@ if (isset($_GET['PogLogin']))
 				padding: 0;
 				font-family:Comic Sans MS;
 			}
+			.likestats{
+				text-align: center;
+				color: white;
+				margin: 5px;
+				margin-right: 550px;
+				padding: 0;
+				font-family:Comic Sans MS;
+			}
 			.title{ font-size:30px; margin:0; color: white; }
 			.creator{ font-size:20px; margin:0 }
 			a:hover {
@@ -371,15 +388,15 @@ if (isset($_GET['PogLogin']))
 		
 				<div class="title-creator">
 					<p class="title">$title</p>
-					<p class="creator">$creator</p>
+					<p class="creator">$creator</p><br>
+					$likes Likes, $dislikes Dislikes
 				</div>
-				
+
 				<div class='likes'>
-		            <form class='likes'>$likes Likes</form>
 		            <form class='likes' method='post' enctype='multipart/form-data'>
-		            <input style='border:none;background:none' action='video_page.php' type='submit' name='likeSelect' value='$likeDisplay'; />
+		            <input style='border:none;background:none' type='submit' name='likeSelect' value='$likeDisplay'; />
 		            <form class='likes' method='post' enctype='multipart/form-data'>
-		            <input style='border:none;background:none' action='video_page.php' type='submit' name='dislikeSelect' value='$dislikeDisplay'; />
+		            <input style='border:none;background:none' type='submit' name='dislikeSelect' value='$dislikeDisplay'; />
 		            </form>
             	</div>
 
@@ -390,12 +407,18 @@ if (isset($_GET['PogLogin']))
 			  	</form>
 
 				<p class="comment-title"><br>Comments:</p>
+				
+				<form class='comments' method='post' enctype='multipart/form-data'>
+					Sort by:<br>
+					<input type="radio" id="sortnewest" name="sort" value="newest">
+					<label for="sortnewest">Newest comments shown first</label><br>
+					<input type="radio" id="sortoldest" name="sort" value="oldest">
+					<label for="sortnewest">Oldest comments shown first</label><br>
+					<input type='submit' value='Sort' name='commentsort' action='video_page.php'><br><br>
+				</form>
 				<p class="comments">$commentString</p>
-
-			</body>
-			
-		</html> 
-		
+			</body>		
+		</html>
 _END;
 
 // Sanitizing input
