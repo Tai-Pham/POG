@@ -348,7 +348,6 @@ _END;
 			addUser($conn, $username, $password, $email);
 			$userID = getID($conn, $username);
 			addAccount($conn, $userID);
-			header('location: PogLogin.php');
 		}
 	}
 	
