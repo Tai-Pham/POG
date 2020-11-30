@@ -162,68 +162,55 @@ define("COMMENTS_SORT_ASC", 1);
 			font-family: 'Work Sans', sans-serif;
 			font-weight: 800;
 		}
-
 		.container {
 			max-width: 100%;
 			float: right;
 			height: 60px;
 			margin: 0 auto;
 		}
-
 		header {
 			background: #202933;
 		}
-
 		header::after {
 			content: '';
 			display: table;
 			clear: both;
 		}
-
 		nav {
 			clear: both;
 			float: right;
 		}
-
 		nav ul {
 			margin: 0;
 			padding: 0;
 			list-style: none;
 		}
-
 		nav li {
 			display: inline-block;
 			margin-left: 70px;
 			padding-top: 23px;
-
 			position: relative;
 		}
-
 		nav a {
 			color: white;
 			text-decoration: none;
 			text-transform: uppercase;
 			font-size: 14px;
 		}
-
 		nav a:hover {
 			color: white;
 			text-decoration: none
 		}
-
 		nav a::before {
 			content: '';
 			display: block;
 			height: 5px;
 			background-color: white;
-
 			position: absolute;
 			top: 0;
 			width: 0%;
-
 			transition: all ease-in-out 250ms;
 		}
-
 		nav a:hover::before {
 			width: 100%;
 		}
@@ -234,7 +221,7 @@ define("COMMENTS_SORT_ASC", 1);
 			<div class="container">
 			<nav>
 				<ul>
-				<li><a href="#">$name</a></li>
+				<li><a href="PogUserPage.php">$name</a></li>
 				<li><a href="PogHomePage.php">Home</a></li>
 				<li><a href="?PogLogin">Log Out</a></li>
 				</ul>
@@ -253,7 +240,6 @@ if (isset($_GET['PogLogin']))
 	echo<<<_END
 	
 		<!DOCTYPE html>
-
 		<style>
 			.Page-Body{background-color:#191919;}
 			.POG-Title{text-align: center;}
@@ -364,8 +350,6 @@ if (isset($_GET['PogLogin']))
 			  }
 	
 		</style>
-
-
 		<html>
 			<head lang="en">
 				<meta charset="UTF-8">
@@ -374,7 +358,6 @@ if (isset($_GET['PogLogin']))
 				<link rel="icon" type="image/png" href="POG-Favicon.png">
 				<title>POG</title>
 			</head>
-
 			<body class="Page-Body"> 
 	
 				<h1 class="POG-Title"> 	
@@ -391,7 +374,6 @@ if (isset($_GET['PogLogin']))
 					<p class="creator">$creator</p><br>
 					$likes Likes, $dislikes Dislikes
 				</div>
-
 				<div class='likes'>
 		            <form class='likes' method='post' enctype='multipart/form-data'>
 		            <input style='border:none;background:none' type='submit' name='likeSelect' value='$likeDisplay'; />
@@ -399,13 +381,11 @@ if (isset($_GET['PogLogin']))
 		            <input style='border:none;background:none' type='submit' name='dislikeSelect' value='$dislikeDisplay'; />
 		            </form>
             	</div>
-
 				<form class="box" method="post">
 					<h1>Leave a comment:</h1>
 					<input type="text" name="commentbox" maxlength="140" class="field-comment" placeholder="Comment">
 					<input type='submit' value='Submit comment' name='commentsubmit'>
 			  	</form>
-
 				<p class="comment-title"><br>Comments:</p>
 				
 				<form class='comments' method='post' enctype='multipart/form-data'>

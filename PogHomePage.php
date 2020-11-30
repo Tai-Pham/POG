@@ -120,7 +120,7 @@ nav a:hover::before {
 	<div class="container">
 	<nav>
 		<ul>
-		<li><a href="#">$name</a></li>
+		<li><a href="?Name">$name</a></li>
 		<li><a href="?Upload">Upload</a></li>
 		<li><a href="?PogLogin">Log Out</a></li>
 		</ul>
@@ -192,6 +192,11 @@ _END;
 if (isset($_GET['Upload']))
 {
 	header('location: PogUpload.php');
+}
+
+if (isset($_GET['Name']))
+{
+	header('location: PogUserPage.php');
 }
 
 if (isset($_GET['PogLogin']))

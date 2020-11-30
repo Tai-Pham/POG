@@ -5,7 +5,9 @@ require_once 'likeFunc.php';
 $conn = new mysqli($hn, $un, $pw, $db);
 if ($conn->connect_error) die (error());
 
-$query = "SELECT * FROM videos";
+$name = $_SESSION['username'];
+
+$query = "SELECT * FROM videos WHERE creator='$name'";
 $result = $conn->query($query);
 if(!$result) die(mysql_fatal_error());
 
