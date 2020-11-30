@@ -200,5 +200,5 @@ if (isset($_GET['PogLogin']))
 	session_destroy();
 	header('location: PogLogin.php');
 }
-require_once 'PogUserPageGet.php'
+require_once 'PogUserPageGET.php'
 ?>
