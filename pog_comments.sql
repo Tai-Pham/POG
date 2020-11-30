@@ -28,9 +28,9 @@ CREATE TABLE `comments` (
   `videoLocation` varchar(255) NOT NULL,
   `comment` varchar(140) NOT NULL,
   `username` varchar(45) NOT NULL,
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`commentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
