@@ -513,6 +513,7 @@ _END;
 		$email = sanitizeMySQL($conn, $email);
 		
 		verifyRegister($username, $password, $repeatedPassword, $email, $conn);
+		header('location: PogLogin.php');
 	}
 	
 	// Closing connection
