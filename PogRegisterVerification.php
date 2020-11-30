@@ -2,59 +2,474 @@
 	require_once 'login.php';
 	$conn = new mysqli($hn, $un, $pw, $db);
 	if ($conn->connect_error) die (error());
-	
+
 	function verifyRegister($username, $password, $repeatedPassword, $email, $conn) {
 		if (isEmpty($username))
 		{
 			http_response_code(503);
-			echo json_encode(array("message" => "Please fill out a username."));
-			// echo "Please fill out a username. <br>";
+			json_encode(array("message" => "Please fill out a username."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Please fill out a username.
+		</div>
+
+		</body>
+		</html>
+_END;
 		}
 		else if (searchUsername($conn, $username) == TRUE)
 		{
 			http_response_code(503);
-			echo json_encode(array("message" => "Username is taken."));
-			// echo "Username is taken. <br>";
+			json_encode(array("message" => "Username is taken."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Username is taken.
+		</div>
+
+		</body>
+		</html>
+_END;
 		}
 		else if (isEmpty($password))
 		{
 			http_response_code(503);
-			echo json_encode(array("message" => "Please fill out a password."));
-			// echo "Please fill out a password. <br>";
+			json_encode(array("message" => "Please fill out a password."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Please fill out a password.
+		</div>
+
+		</body>
+		</html>
+_END;
 		}
 		else if (isEmpty($repeatedPassword))
 		{
 			http_response_code(503);
-			echo json_encode(array("message" => "Please fill out the repeated password."));
-			// echo "Please fill out the repeated password. <br>";
+			json_encode(array("message" => "Please fill out the repeated password."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Please fill out the repeated password.
+		</div>
+
+		</body>
+		</html>
+_END;
 		}
 		else if (isEmpty($email))
 		{
 			http_response_code(503);
-			echo json_encode(array("message" => "Please fill out an email."));
-			// echo "Please fill out an email. <br>";
+			json_encode(array("message" => "Please fill out an email."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Please fill out an email.
+		</div>
+
+		</body>
+		</html>
+_END;
 		}
 		else if (searchEmail($conn, $email) == TRUE)
 		{
 			http_response_code(503);
-			echo json_encode(array("message" => "Email is in use."));
-			// echo "Email is in use. <br>";
+			json_encode(array("message" => "Email is in use."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
 		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Email is in use.
+		</div>
+
+		</body>
+		</html>
+_END;
+        }
+        else if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        {
+            http_response_code(503);
+			json_encode(array("message" => "Email is not valid."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Email is not valid.
+		</div>
+
+		</body>
+		</html>
+_END;
+        }
 		else if ($password != $repeatedPassword)
 		{
 			http_response_code(503);
-			echo json_encode(array("message" => "The passwords do not match."));
-			echo "The passwords do not match. <br>";
+			json_encode(array("message" => "The passwords do not match."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> The passwords do not match.
+		</div>
+
+		</body>
+		</html>
+_END;
+		}
+		else if (strlen($username) > 30)
+		{
+			http_response_code(503);
+			json_encode(array("message" => "Username is too long."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Username is too long.
+		</div>
+
+		</body>
+		</html>
+_END;
+		}
+		else if ((strlen($password) < 20) || strlen($password) > 500 )
+		{
+			http_response_code(503);
+			json_encode(array("message" => "Password is not between 20 to 500."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Password is not between 20 to 500.
+		</div>
+
+		</body>
+		</html>
+_END;
 		}
 		else
 		{
 			http_response_code(201);
-			echo json_encode(array("message" => "User creation successful."));
+			json_encode(array("message" => "User creation successful."));
 			
 			addUser($conn, $username, $password, $email);
 			$userID = getID($conn, $username);
 			addAccount($conn, $userID);
-			header('location: PogLogin.php');
+
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #8FE86B;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Success. </strong> Account created.
+		</div>
+
+		</body>
+		</html>
+_END;
 		}
 	}
 	
@@ -83,7 +498,6 @@
 			$stmt->close();
 			die (error());
 		}
-
 		$stmt->close();
 	}
 	
@@ -205,7 +619,8 @@
 		$var = sanitizeString($var);
 		return $var;
 	}
-	
+
+
 	if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['repeatedPassword']) && isset($_POST['email']) && isset($_POST['registerButton']))
 	{
 		$username = $_POST['username'];
