@@ -223,20 +223,11 @@ define("COMMENTS_SORT_ASC", 1);
 				<ul>
 				<li><a href="PogUserPage.php">$name</a></li>
 				<li><a href="PogHomePage.php">Home</a></li>
-				<li><a href="?PogLogin">Log Out</a></li>
 				</ul>
 			</nav>
 			</div>
 		</header>
 _END;
-
-if (isset($_GET['PogLogin']))
-{
-	session_unset();
-	session_destroy();
-	header('location: PogLogin.php');
-}
-
 	echo<<<_END
 	
 		<!DOCTYPE html>
