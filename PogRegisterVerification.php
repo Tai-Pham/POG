@@ -2,7 +2,7 @@
 	require_once 'login.php';
 	$conn = new mysqli($hn, $un, $pw, $db);
 	if ($conn->connect_error) die (error());
-	
+
 	function verifyRegister($username, $password, $repeatedPassword, $email, $conn) {
 		if (isEmpty($username))
 		{
@@ -340,6 +340,90 @@ _END;
 		</html>
 _END;
 		}
+		else if (strlen($username) > 30)
+		{
+			http_response_code(503);
+			json_encode(array("message" => "Username is too long."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Username is too long.
+		</div>
+
+		</body>
+		</html>
+_END;
+		}
+		else if ((strlen($password) < 20) || strlen($password) > 500 )
+		{
+			http_response_code(503);
+			json_encode(array("message" => "Password is not between 20 to 500."));
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #E65D27;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Error. </strong> Password is not between 20 to 500.
+		</div>
+
+		</body>
+		</html>
+_END;
+		}
 		else
 		{
 			http_response_code(201);
@@ -348,6 +432,44 @@ _END;
 			addUser($conn, $username, $password, $email);
 			$userID = getID($conn, $username);
 			addAccount($conn, $userID);
+
+			echo <<<_END
+		<html>
+		<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.alert {
+		padding: 20px;
+		background-color: #8FE86B;
+		color: white;
+		}
+
+		.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+		}
+
+		.closebtn:hover {
+		color: black;
+		}
+		</style>
+		</head>
+		<body>
+
+		<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>Success. </strong> Account created.
+		</div>
+
+		</body>
+		</html>
+_END;
 		}
 	}
 	
@@ -376,7 +498,6 @@ _END;
 			$stmt->close();
 			die (error());
 		}
-
 		$stmt->close();
 	}
 	
@@ -498,7 +619,8 @@ _END;
 		$var = sanitizeString($var);
 		return $var;
 	}
-	
+
+
 	if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['repeatedPassword']) && isset($_POST['email']) && isset($_POST['registerButton']))
 	{
 		$username = $_POST['username'];
@@ -512,7 +634,6 @@ _END;
 		$email = sanitizeMySQL($conn, $email);
 		
 		verifyRegister($username, $password, $repeatedPassword, $email, $conn);
-		header('location: PogLogin.php');
 	}
 	
 	// Closing connection
