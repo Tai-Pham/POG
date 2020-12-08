@@ -22,6 +22,8 @@ Repository for code used in our POG app in CS160.
 1. You can download or pull the repository from the master branch onto your machine.
 2. Locate the htdocs folder inside the XAMPP folder.
 3. Drag the all the PHP files into the htdocs folder.
-4. Type in `http://localhost/phpmyadmin/` inside your browser and log into MySQL.
-5. Create a database named `Pog` and create the following tables specified by the SQL files that you have just downloaded.
-6. Type in `http://localhost/poglogin.php` inside your browser and the web application should start up.
+4. Start up XAMPP through the executable and allow Apache and MySQL to start.
+5. Type in `http://localhost/phpmyadmin/` inside your browser and log into MySQL.
+6. Create a database named `Pog` and create the following tables specified by the SQL files that you have just downloaded.
+7. Type in `http://localhost/poglogin.php` inside your browser and the web application should start up.
+8. When finished, do not forget to close XAMPP.
