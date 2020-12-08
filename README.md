@@ -15,5 +15,7 @@ Repository for code used in our POG app in CS160.
   - Tests an ideal input where all fields are correctly filled (should succeed if response code is 201 and message returned is "User creation successful.")
 
 # Internals
-Depdencies:
+**Dependencies:**
 - XAMPP: https://www.apachefriends.org/index.html
+**File Setup:**
+
