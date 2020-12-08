@@ -16,7 +16,8 @@ Repository for code used in our POG app in CS160.
 
 # Internals
 **Dependencies:**
-- XAMPP: https://www.apachefriends.org/index.html  
+- XAMPP: https://www.apachefriends.org/index.html
+
 **File Setup:**
 1. You can download or pull the repository from the master branch onto your machine.
 2. Locate the htdocs folder inside the XAMPP folder.
