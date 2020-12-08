@@ -13,3 +13,7 @@ Repository for code used in our POG app in CS160.
   - Tests no username input, all fields blank (should succeed if response code is 503 and message returned is "Please fill out a username.")
   - Tests no password input, all other fields filled (should succeed if response code is 503 and message returned is "Please fill out a password.")
   - Tests an ideal input where all fields are correctly filled (should succeed if response code is 201 and message returned is "User creation successful.")
+
+# Internals
+Depdencies:
+- XAMPP: https://www.apachefriends.org/index.html
