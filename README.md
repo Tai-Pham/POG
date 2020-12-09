@@ -15,6 +15,8 @@ Repository for code used in our POG app in CS160.
 7. Type in `http://localhost/poglogin.php` inside your browser and the web application should start up.
 8. When finished, do not forget to close XAMPP.
 
+# User Manual
+
 # Automated Frontend Test Cases (Uses Cypress)
 - Register Tests:
   - Tests username input, all other fields blank (should succeed if error message is shown)
