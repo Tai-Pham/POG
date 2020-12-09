@@ -16,7 +16,7 @@ Repository for code used in our POG app in CS160.
 8. When finished, do not forget to close XAMPP.
 
 # User Manual
-**Link:** https://docs.google.com/document/d/1OPadbnPe-dor-21CAF0QjbKL2YxxGbZ11wE-yFP5kHg/edit
+**Link:** https://docs.google.com/document/d/1OPadbnPe-dor-21CAF0QjbKL2YxxGbZ11wE-yFP5kHg/edit?usp=sharing
 
 # Automated Frontend Test Cases (Uses Cypress)
 - Register Tests:
