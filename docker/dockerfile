@@ -1,0 +1,5 @@
+FROM php:apache
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+RUN docker-php-ext-install mysqli
+EXPOSE 80
